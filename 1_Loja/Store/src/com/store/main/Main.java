@@ -11,6 +11,7 @@ import com.store.domain.Product;
 import com.store.gui.Initial;
 import com.store.services.OrderService;
 import java.time.LocalDate;
+import java.time.Month;
 
 public class Main {
     public static void main(String[] args) {
@@ -41,10 +42,10 @@ public class Main {
         dbProd.Insert(p5);
         
         // Novos itens de venda
-        OrderItem oi1 = new OrderItem(p1, 2, p1.getValueUnitary());
-        OrderItem oi2 = new OrderItem(p1, 3, p1.getValueUnitary());
-        OrderItem oi3 = new OrderItem(p5, 1, p5.getValueUnitary());
-        OrderItem oi4 = new OrderItem(p2, 5, p2.getValueUnitary());
+        OrderItem oi1 = new OrderItem(p1, 2, p1.getValueUnitary(), p1.getCategory().getTax());
+        OrderItem oi2 = new OrderItem(p1, 3, p1.getValueUnitary(), p1.getCategory().getTax());
+        OrderItem oi3 = new OrderItem(p5, 1, p5.getValueUnitary(), p5.getCategory().getTax());
+        OrderItem oi4 = new OrderItem(p2, 5, p2.getValueUnitary(), p2.getCategory().getTax());
         OrderItemDAO dbOrderItem = new OrderItemDAO();
         dbOrderItem.Insert(oi1);
         dbOrderItem.Insert(oi2);
@@ -52,14 +53,14 @@ public class Main {
         dbOrderItem.Insert(oi4);
         
         // Novas vendas
-        Order o1 = new Order(LocalDate.now());
+        Order o1 = new Order(LocalDate.of(2022, Month.MARCH, 8));
         o1.addOrderItem(oi1);
         o1.addOrderItem(oi4);
         
-        Order o2 = new Order(LocalDate.now());
+        Order o2 = new Order(LocalDate.of(2022, Month.MARCH, 9));
         o2.addOrderItem(oi2);
 
-        Order o3 = new Order(LocalDate.now());
+        Order o3 = new Order(LocalDate.of(2022, Month.MARCH, 8));
         o3.addOrderItem(oi3);
         
         OrderDAO dbOrder = new OrderDAO();

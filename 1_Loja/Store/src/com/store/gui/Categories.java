@@ -404,6 +404,8 @@ public class Categories extends javax.swing.JFrame {
             new EmitAlert(this, "Falha ao atualizar categoria no banco").error();
         } catch (NumberFormatException ex) {
             new EmitAlert(this, "Id inválido").error();
+        } catch (IllegalAccessException ex) {
+            new EmitAlert(this, ex.getMessage()).error();
         } catch (Exception ex) {
             new EmitAlert(this, "Erro inesperado").error();
         }

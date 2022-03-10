@@ -68,6 +68,22 @@ public abstract class OrderService {
         return dbOrder.Update(order.getId(), save);
     }
     
+    public static double getValueTaxOrderById(int idOrder) {
+        double total = 0;
+        
+        OrderDAO dbOrder = new OrderDAO();
+        Order save = dbOrder.FindById(idOrder);
+        
+        if (save == null)
+            return total;
+        
+        for (OrderItem item : save.getOrderItem()) {
+            total += (item.getValueUnitary() * item.getTax()) * item.getQuantity();
+        }
+        
+        return total;
+    }
+    
     private static double getValueTotalOrder(Order order, Category category) {
         double total = 0;
 

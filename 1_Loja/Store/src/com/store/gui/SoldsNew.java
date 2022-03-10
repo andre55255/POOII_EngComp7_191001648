@@ -342,7 +342,7 @@ public class SoldsNew extends javax.swing.JFrame {
             }
             
             if (!isExistsItemList) {
-                OrderItem item = new OrderItem(product, 1, product.getValueUnitary());
+                OrderItem item = new OrderItem(product, 1, product.getValueUnitary(), product.getCategory().getTax());
                 this.order.addOrderItem(item);
                 updateInputsOrder();
                 dbOrderItem.Insert(item);

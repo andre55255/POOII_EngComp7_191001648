@@ -5,13 +5,15 @@ public class OrderItem {
     private Product product;
     private int quantity;
     private double valueUnitary;
-
+    private double tax;
+    
     public OrderItem() {}
      
-    public OrderItem(Product product, int quantity, double valueUnitary) {
+    public OrderItem(Product product, int quantity, double valueUnitary, double tax) {
         this.product = product;
         this.quantity = quantity;
         this.valueUnitary = valueUnitary;
+        this.tax = tax;
     }
 
     public int getId() {
@@ -44,5 +46,13 @@ public class OrderItem {
 
     public void setValueUnitary(double valueUnitary) {
         this.valueUnitary = valueUnitary;
+    }
+
+    public double getTax() {
+        return tax;
+    }
+
+    public void setTax(double tax) {
+        this.tax = tax;
     }
 }

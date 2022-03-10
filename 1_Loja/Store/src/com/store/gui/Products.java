@@ -362,7 +362,7 @@ public class Products extends javax.swing.JFrame {
             double valueUnitary = Double.parseDouble(jtfValueUnitaryProdNew.getText());
 
             CategoryDAO daoCat = new CategoryDAO();
-            Category category = daoCat.FindAll().get(jcbCategoryProdNew.getSelectedIndex()-1);
+            Category category = daoCat.FindAll().get(jcbCategoryProdNew.getSelectedIndex() - 1);
 
             ProductDAO dao = new ProductDAO();
             Product p = new Product(description, quantity, valueUnitary, category);
@@ -396,9 +396,9 @@ public class Products extends javax.swing.JFrame {
             jtfDscProdNew.setText(p.getDescription());
             jtfQuantityProdNew.setText(p.getQuantity() + "");
             jtfValueUnitaryProdNew.setText(p.getValueUnitary() + "");
-            
+
             CategoryDAO dbCat = new CategoryDAO();
-            jcbCategoryProdNew.setSelectedIndex(dbCat.FindAll().indexOf(p.getCategory())+1);
+            jcbCategoryProdNew.setSelectedIndex(dbCat.FindAll().indexOf(p.getCategory()) + 1);
 
             jbUpdateProduct.setEnabled(true);
             jbDeleteProduct.setEnabled(true);
@@ -431,13 +431,13 @@ public class Products extends javax.swing.JFrame {
 
             if (result) {
                 new EmitAlert(this, "Produto atualizado com sucesso").success();
-                
+
                 this.renderTable();
                 this.clearInputs();
-                
+
                 jbUpdateProduct.setEnabled(false);
                 jbDeleteProduct.setEnabled(false);
-                
+
                 return;
             }
 
@@ -455,17 +455,19 @@ public class Products extends javax.swing.JFrame {
 
             ProductDAO dao = new ProductDAO();
             boolean result = dao.Delete(id);
-            
+
             if (result) {
                 new EmitAlert(this, "Produto deletado com sucesso").success();
                 this.renderTable();
                 this.clearInputs();
                 return;
             }
-            
+
             new EmitAlert(this, "Falha ao deletar o produto").error();
         } catch (NumberFormatException ex) {
             new EmitAlert(this, "Id não encontrado").error();
+        } catch (IllegalAccessException ex) {
+            new EmitAlert(this, ex.getMessage()).error();
         } catch (Exception ex) {
             new EmitAlert(this, "Ocorreu um erro inesperado").error();
         }

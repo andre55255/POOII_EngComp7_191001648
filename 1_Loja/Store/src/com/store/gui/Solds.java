@@ -170,6 +170,11 @@ public class Solds extends javax.swing.JFrame {
         jbListSolds.setFocusable(false);
         jbListSolds.setMargin(new java.awt.Insets(8, 20, 8, 20));
         jbListSolds.setName(""); // NOI18N
+        jbListSolds.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbListSoldsActionPerformed(evt);
+            }
+        });
 
         jtfTotalValue.setEditable(false);
         jtfTotalValue.setBackground(new java.awt.Color(255, 255, 255));
@@ -272,6 +277,10 @@ public class Solds extends javax.swing.JFrame {
     private void jbNewSoldActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbNewSoldActionPerformed
         new SoldsNew().setVisible(true);
     }//GEN-LAST:event_jbNewSoldActionPerformed
+
+    private void jbListSoldsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbListSoldsActionPerformed
+        new SoldsListAll().setVisible(true);
+    }//GEN-LAST:event_jbListSoldsActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

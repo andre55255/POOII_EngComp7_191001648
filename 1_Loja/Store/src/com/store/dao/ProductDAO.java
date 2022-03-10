@@ -1,5 +1,6 @@
 package com.store.dao;
 
+import com.store.domain.OrderItem;
 import com.store.domain.Product;
 import java.util.List;
 
@@ -30,11 +31,19 @@ public class ProductDAO {
         return true;
     }
     
-    public boolean Delete(int id) {
+    public boolean Delete(int id) throws IllegalAccessException{
         Product prodSave = FindById(id);
         
         if (prodSave == null)
             return false;
+        
+        List<OrderItem> itemsOrders = new OrderItemDAO().FindAll();
+        for (OrderItem item : itemsOrders) {
+            if (item.getProduct() == prodSave) {
+                throw new IllegalAccessException(String.format("Produto está vinculado com item de pedido ID %d, não é possível excluir", 
+                        item.getId()));
+            }
+        }
         
         return Context.dbProducts.remove(prodSave);
     }

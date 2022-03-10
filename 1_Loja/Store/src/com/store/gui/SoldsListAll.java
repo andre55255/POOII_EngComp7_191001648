@@ -1,26 +1,21 @@
 package com.store.gui;
 
-import com.store.dao.OrderItemDAO;
+import com.store.dao.OrderDAO;
 import com.store.domain.Order;
-import com.store.domain.OrderItem;
 import com.store.helpers.EmitAlert;
+import com.store.services.OrderService;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class SoldsOrderItems extends javax.swing.JFrame {
+public class SoldsListAll extends javax.swing.JFrame {
 
-    private Order order;
-    
-    public SoldsOrderItems() {
+    public SoldsListAll() {
         initComponents();
-    }
-    
-    public SoldsOrderItems(Order order) {
-        initComponents();
-        this.order = order;
         this.renderTable();
     }
-    
+
     private String money(double money) {
         DecimalFormat df = new DecimalFormat("###,###.00");
         return df.format(money);
@@ -28,23 +23,27 @@ public class SoldsOrderItems extends javax.swing.JFrame {
 
     private void renderTable() {
         try {
-            DefaultTableModel model = (DefaultTableModel) jTableOrderItems.getModel();
+            OrderDAO dbOrder = new OrderDAO();
+            List<Order> orders = dbOrder.FindAll();
+
+            DefaultTableModel model = (DefaultTableModel) jTableOrders.getModel();
             model.setRowCount(0);
-            
-            for (OrderItem item : this.order.getOrderItem()) {
+
+            for (Order item : orders) {
                 model.addRow(new Object[]{
                     item.getId(),
-                    item.getProduct().getDescription(),
-                    this.money(item.getValueUnitary()),
-                    item.getQuantity(),
-                    this.money(item.getValueUnitary() * item.getQuantity())
+                    item.getDateHour().format(DateTimeFormatter.ofPattern("dd/MM/yyyy")),
+                    item.getOrderItem().size(),
+                    "R$ " + this.money(OrderService.totalValueOrder(item.getId())),
+                    "R$ " + this.money(OrderService.getValueTaxOrderById(item.getId())),
+                    item.isStatus() ? "Fechada" : "Aberta"
                 });
             }
         } catch (Exception ex) {
-            new EmitAlert(this, "Falha ao carregar dados na tabela").error();
+            new EmitAlert(this, "Ocorreu um erro ao renderizar a tabela de vendas").error();
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -52,45 +51,40 @@ public class SoldsOrderItems extends javax.swing.JFrame {
         jPanel1 = new javax.swing.JPanel();
         jLabel1 = new javax.swing.JLabel();
         jScrollPane = new javax.swing.JScrollPane();
-        jTableOrderItems = new javax.swing.JTable();
-        jbtnClearOrder = new javax.swing.JButton();
+        jTableOrders = new javax.swing.JTable();
+        jbDetailsOrderItem = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
-        setTitle("Itens de pedido");
+        setTitle("Lista de vendas");
         setIconImage(new javax.swing.ImageIcon(getClass().getResource("/com/store/assets/favicon.png")).getImage());
         setResizable(false);
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            public void windowClosing(java.awt.event.WindowEvent evt) {
-                formWindowClosing(evt);
-            }
-        });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(18, 10, 120));
         jLabel1.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
-        jLabel1.setText("ITENS DE PEDIDO");
+        jLabel1.setText("LISTA DE VENDAS");
         jLabel1.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
 
         jScrollPane.setBackground(new java.awt.Color(255, 255, 255));
         jScrollPane.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
 
-        jTableOrderItems.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
-        jTableOrderItems.setForeground(new java.awt.Color(18, 10, 120));
-        jTableOrderItems.setModel(new javax.swing.table.DefaultTableModel(
+        jTableOrders.setFont(new java.awt.Font("Segoe UI Light", 0, 12)); // NOI18N
+        jTableOrders.setForeground(new java.awt.Color(18, 10, 120));
+        jTableOrders.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Id", "Produto", "Valor Unitário", "Quantidade", "Valor Total"
+                "Id", "Data da venda", "Quantidade Produtos", "Valor Total Bruto", "Valor Total Impostos", "Status da venda"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Integer.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, true
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -101,22 +95,28 @@ public class SoldsOrderItems extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
-        jTableOrderItems.setGridColor(new java.awt.Color(36, 22, 84));
-        jScrollPane.setViewportView(jTableOrderItems);
+        jTableOrders.setGridColor(new java.awt.Color(36, 22, 84));
+        jTableOrders.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableOrdersMouseClicked(evt);
+            }
+        });
+        jScrollPane.setViewportView(jTableOrders);
 
-        jbtnClearOrder.setBackground(new java.awt.Color(255, 0, 51));
-        jbtnClearOrder.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
-        jbtnClearOrder.setForeground(new java.awt.Color(255, 255, 255));
-        jbtnClearOrder.setText("Retirar item do pedido");
-        jbtnClearOrder.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
-        jbtnClearOrder.setBorderPainted(false);
-        jbtnClearOrder.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
-        jbtnClearOrder.setFocusable(false);
-        jbtnClearOrder.setMargin(new java.awt.Insets(8, 20, 8, 20));
-        jbtnClearOrder.setName(""); // NOI18N
-        jbtnClearOrder.addActionListener(new java.awt.event.ActionListener() {
+        jbDetailsOrderItem.setBackground(new java.awt.Color(18, 10, 120));
+        jbDetailsOrderItem.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jbDetailsOrderItem.setForeground(new java.awt.Color(255, 255, 255));
+        jbDetailsOrderItem.setText("Itens da venda");
+        jbDetailsOrderItem.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
+        jbDetailsOrderItem.setBorderPainted(false);
+        jbDetailsOrderItem.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbDetailsOrderItem.setEnabled(false);
+        jbDetailsOrderItem.setFocusable(false);
+        jbDetailsOrderItem.setMargin(new java.awt.Insets(8, 20, 8, 20));
+        jbDetailsOrderItem.setName(""); // NOI18N
+        jbDetailsOrderItem.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jbtnClearOrderActionPerformed(evt);
+                jbDetailsOrderItemActionPerformed(evt);
             }
         });
 
@@ -127,11 +127,11 @@ public class SoldsOrderItems extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 820, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 865, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(jbtnClearOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 200, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(jbDetailsOrderItem, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -139,11 +139,11 @@ public class SoldsOrderItems extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(18, 18, 18)
+                .addComponent(jScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 429, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 378, Short.MAX_VALUE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jbtnClearOrder, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(49, 49, 49))
+                .addComponent(jbDetailsOrderItem, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(13, Short.MAX_VALUE))
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -161,27 +161,20 @@ public class SoldsOrderItems extends javax.swing.JFrame {
         setLocationRelativeTo(null);
     }// </editor-fold>//GEN-END:initComponents
 
-    private void jbtnClearOrderActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbtnClearOrderActionPerformed
+    private void jbDetailsOrderItemActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbDetailsOrderItemActionPerformed
         try {
-            OrderItem item = this.order.getOrderItem().get(jTableOrderItems.getSelectedRow());
-            int quantity = item.getQuantity();
-            if (quantity == 1) {
-                this.order.getOrderItem().remove(jTableOrderItems.getSelectedRow());
-                
-                OrderItemDAO dao = new OrderItemDAO();
-                dao.Delete(item.getId());
-            }
-            
-            item.setQuantity(item.getQuantity() - 1);
-            this.renderTable();
-        } catch (Exception ex) {
-            new EmitAlert(this, "Falha ao retirar item de pedido").error();
-        }
-    }//GEN-LAST:event_jbtnClearOrderActionPerformed
+            int indexSelected = jTableOrders.getSelectedRow();
+            Order order = new OrderDAO().FindAll().get(indexSelected);
 
-    private void formWindowClosing(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowClosing
-        new SoldsNew(this.order).setVisible(true);
-    }//GEN-LAST:event_formWindowClosing
+            new SoldsOrderItemConsolid(order).setVisible(true);
+        } catch (Exception ex) {
+            new EmitAlert(this, "Ocorreu um erro ao exibir tela de detalhes de itens de pedido").error();
+        }
+    }//GEN-LAST:event_jbDetailsOrderItemActionPerformed
+
+    private void jTableOrdersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableOrdersMouseClicked
+        jbDetailsOrderItem.setEnabled(true);
+    }//GEN-LAST:event_jTableOrdersMouseClicked
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */
@@ -197,19 +190,19 @@ public class SoldsOrderItems extends javax.swing.JFrame {
                 }
             }
         } catch (ClassNotFoundException ex) {
-            java.util.logging.Logger.getLogger(SoldsOrderItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SoldsListAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (InstantiationException ex) {
-            java.util.logging.Logger.getLogger(SoldsOrderItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SoldsListAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (IllegalAccessException ex) {
-            java.util.logging.Logger.getLogger(SoldsOrderItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SoldsListAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         } catch (javax.swing.UnsupportedLookAndFeelException ex) {
-            java.util.logging.Logger.getLogger(SoldsOrderItems.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
+            java.util.logging.Logger.getLogger(SoldsListAll.class.getName()).log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(() -> {
-            new SoldsOrderItems().setVisible(true);
+            new SoldsListAll().setVisible(true);
         });
     }
 
@@ -217,7 +210,7 @@ public class SoldsOrderItems extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane;
-    private javax.swing.JTable jTableOrderItems;
-    private javax.swing.JButton jbtnClearOrder;
+    private javax.swing.JTable jTableOrders;
+    private javax.swing.JButton jbDetailsOrderItem;
     // End of variables declaration//GEN-END:variables
 }
