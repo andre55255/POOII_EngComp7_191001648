@@ -6,14 +6,23 @@ import java.util.List;
 
 public class Order {
     private int id;
-    private final List<OrderItem> items = new ArrayList<>();
+    private List<OrderItem> items = new ArrayList<>();
     private LocalDate dateHour;
+    private boolean status;
 
     public Order () {}
     
-    public Order(int id, LocalDate dateHour) {
-        this.id = id;
+    public Order(LocalDate dateHour) {
         this.dateHour = dateHour;
+        this.status = false;
+    }
+
+    public boolean isStatus() {
+        return status;
+    }
+
+    public void setStatus(boolean status) {
+        this.status = status;
     }
 
     public int getId() {
@@ -42,5 +51,9 @@ public class Order {
     
     public List<OrderItem> getOrderItem() {
         return this.items;
+    }
+    
+    public void setOrderItem(List<OrderItem> items) {
+        this.items = items;
     }
 }

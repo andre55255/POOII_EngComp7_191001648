@@ -82,6 +82,11 @@ public class Initial extends javax.swing.JFrame {
         jBtnSales.setDefaultCapable(false);
         jBtnSales.setFocusPainted(false);
         jBtnSales.setFocusable(false);
+        jBtnSales.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jBtnSalesActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -131,6 +136,10 @@ public class Initial extends javax.swing.JFrame {
     private void jBtnProductActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnProductActionPerformed
         new Products().setVisible(true);
     }//GEN-LAST:event_jBtnProductActionPerformed
+
+    private void jBtnSalesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jBtnSalesActionPerformed
+        new Solds().setVisible(true);
+    }//GEN-LAST:event_jBtnSalesActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

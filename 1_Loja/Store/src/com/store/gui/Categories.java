@@ -14,18 +14,29 @@ public class Categories extends javax.swing.JFrame {
     }
 
     private void renderTable() {
-        DefaultTableModel model = (DefaultTableModel) jTableCategories.getModel();
-        model.setRowCount(0);
+        try {
+            DefaultTableModel model = (DefaultTableModel) jTableCategories.getModel();
+            model.setRowCount(0);
 
-        List<Category> categories = new CategoryDAO().FindAll();
+            List<Category> categories = new CategoryDAO().FindAll();
 
-        for (Category c : categories) {
-            model.addRow(new Object[]{
-                c.getId(),
-                c.getDescription(),
-                c.getTax()
-            });
+            for (Category c : categories) {
+                model.addRow(new Object[]{
+                    c.getId(),
+                    c.getDescription(),
+                    formatPercents(c.getTax())
+                });
+            }
+        } catch (Exception ex) {
+            new EmitAlert(this, "Ocorreu um erro ao renderizar a tabela").error();
+            System.out.println(ex.getMessage());
         }
+
+    }
+
+    private String formatPercents(double num) {
+        double aux = num * 100;
+        return aux + " %";
     }
 
     @SuppressWarnings("unchecked")
@@ -90,7 +101,7 @@ public class Categories extends javax.swing.JFrame {
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.Double.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
                 false, false, false

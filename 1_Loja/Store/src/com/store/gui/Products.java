@@ -5,6 +5,7 @@ import com.store.dao.ProductDAO;
 import com.store.domain.Category;
 import com.store.domain.Product;
 import com.store.helpers.EmitAlert;
+import com.store.services.ProductService;
 import java.text.DecimalFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
@@ -35,7 +36,8 @@ public class Products extends javax.swing.JFrame {
                     p.getDescription(),
                     p.getCategory().getDescription(),
                     p.getQuantity(),
-                    this.money(p.getValueUnitary())
+                    "R$ " + this.money(p.getValueUnitary()),
+                    "$ " + this.money(ProductService.valueProductInDollar(p))
                 });
             }
         } catch (Exception ex) {
@@ -168,14 +170,14 @@ public class Products extends javax.swing.JFrame {
 
             },
             new String [] {
-                "Id", "Descrição", "Categoria", "Quantidade", "Valor unitário"
+                "Id", "Descrição", "Categoria", "Quantidade", "Valor unitário (R$)", "Valor unitário ($)"
             }
         ) {
             Class[] types = new Class [] {
-                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class
+                java.lang.Integer.class, java.lang.String.class, java.lang.String.class, java.lang.Double.class, java.lang.String.class, java.lang.String.class
             };
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false
+                false, false, false, false, false, false
             };
 
             public Class getColumnClass(int columnIndex) {
@@ -214,7 +216,7 @@ public class Products extends javax.swing.JFrame {
         jbDeleteProduct.setBackground(new java.awt.Color(255, 0, 51));
         jbDeleteProduct.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jbDeleteProduct.setForeground(new java.awt.Color(255, 255, 255));
-        jbDeleteProduct.setText("Deletar categoria");
+        jbDeleteProduct.setText("Deletar produto");
         jbDeleteProduct.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         jbDeleteProduct.setBorderPainted(false);
         jbDeleteProduct.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
@@ -273,11 +275,11 @@ public class Products extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, 972, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtfDscProdNew)
                     .addComponent(jtfQuantityProdNew)
                     .addComponent(jtfValueUnitaryProdNew)
-                    .addComponent(jScrollPane, javax.swing.GroupLayout.DEFAULT_SIZE, 972, Short.MAX_VALUE)
+                    .addComponent(jScrollPane)
                     .addComponent(jcbCategoryProdNew, 0, 0, Short.MAX_VALUE)
                     .addComponent(jLabel9, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                     .addComponent(jtfProductSaveId)
@@ -296,7 +298,7 @@ public class Products extends javax.swing.JFrame {
                             .addComponent(jLabel7, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel8, javax.swing.GroupLayout.PREFERRED_SIZE, 120, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jbClearInputs, javax.swing.GroupLayout.PREFERRED_SIZE, 276, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(0, 0, Short.MAX_VALUE)))
+                        .addGap(0, 687, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -360,7 +362,7 @@ public class Products extends javax.swing.JFrame {
             double valueUnitary = Double.parseDouble(jtfValueUnitaryProdNew.getText());
 
             CategoryDAO daoCat = new CategoryDAO();
-            Category category = daoCat.FindAll().get(jcbCategoryProdNew.getSelectedIndex());
+            Category category = daoCat.FindAll().get(jcbCategoryProdNew.getSelectedIndex()-1);
 
             ProductDAO dao = new ProductDAO();
             Product p = new Product(description, quantity, valueUnitary, category);
@@ -394,7 +396,9 @@ public class Products extends javax.swing.JFrame {
             jtfDscProdNew.setText(p.getDescription());
             jtfQuantityProdNew.setText(p.getQuantity() + "");
             jtfValueUnitaryProdNew.setText(p.getValueUnitary() + "");
-            jcbCategoryProdNew.setSelectedIndex(p.getCategory().getId() - 1);
+            
+            CategoryDAO dbCat = new CategoryDAO();
+            jcbCategoryProdNew.setSelectedIndex(dbCat.FindAll().indexOf(p.getCategory())+1);
 
             jbUpdateProduct.setEnabled(true);
             jbDeleteProduct.setEnabled(true);

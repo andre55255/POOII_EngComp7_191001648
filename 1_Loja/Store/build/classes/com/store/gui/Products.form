@@ -54,11 +54,11 @@
               <Group type="102" attributes="0">
                   <EmptySpace max="-2" attributes="0"/>
                   <Group type="103" groupAlignment="0" attributes="0">
-                      <Component id="jLabel1" alignment="0" pref="972" max="32767" attributes="0"/>
+                      <Component id="jLabel1" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfDscProdNew" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfQuantityProdNew" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfValueUnitaryProdNew" alignment="0" max="32767" attributes="0"/>
-                      <Component id="jScrollPane" alignment="0" pref="972" max="32767" attributes="0"/>
+                      <Component id="jScrollPane" alignment="0" max="32767" attributes="0"/>
                       <Component id="jcbCategoryProdNew" alignment="0" pref="0" max="32767" attributes="0"/>
                       <Component id="jLabel9" alignment="0" max="32767" attributes="0"/>
                       <Component id="jtfProductSaveId" alignment="0" max="32767" attributes="0"/>
@@ -81,7 +81,7 @@
                               <Component id="jLabel8" alignment="0" min="-2" pref="120" max="-2" attributes="0"/>
                               <Component id="jbClearInputs" alignment="0" min="-2" pref="276" max="-2" attributes="0"/>
                           </Group>
-                          <EmptySpace min="0" pref="0" max="32767" attributes="0"/>
+                          <EmptySpace min="0" pref="687" max="32767" attributes="0"/>
                       </Group>
                   </Group>
                   <EmptySpace max="-2" attributes="0"/>
@@ -316,12 +316,13 @@
                   <Color blue="78" green="a" red="12" type="rgb"/>
                 </Property>
                 <Property name="model" type="javax.swing.table.TableModel" editor="org.netbeans.modules.form.editors2.TableModelEditor">
-                  <Table columnCount="5" rowCount="0">
+                  <Table columnCount="6" rowCount="0">
                     <Column editable="false" title="Id" type="java.lang.Integer"/>
                     <Column editable="false" title="Descri&#xe7;&#xe3;o" type="java.lang.String"/>
                     <Column editable="false" title="Categoria" type="java.lang.String"/>
                     <Column editable="false" title="Quantidade" type="java.lang.Double"/>
-                    <Column editable="false" title="Valor unit&#xe1;rio" type="java.lang.String"/>
+                    <Column editable="false" title="Valor unit&#xe1;rio (R$)" type="java.lang.String"/>
+                    <Column editable="false" title="Valor unit&#xe1;rio ($)" type="java.lang.String"/>
                   </Table>
                 </Property>
                 <Property name="gridColor" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
@@ -379,7 +380,7 @@
             <Property name="foreground" type="java.awt.Color" editor="org.netbeans.beaninfo.editors.ColorEditor">
               <Color blue="ff" green="ff" red="ff" type="rgb"/>
             </Property>
-            <Property name="text" type="java.lang.String" value="Deletar categoria"/>
+            <Property name="text" type="java.lang.String" value="Deletar produto"/>
             <Property name="border" type="javax.swing.border.Border" editor="org.netbeans.modules.form.editors2.BorderEditor">
               <Border info="org.netbeans.modules.form.compat2.border.LineBorderInfo">
                 <LineBorder roundedCorners="true" thickness="0">

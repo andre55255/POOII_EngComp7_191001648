@@ -16,12 +16,14 @@ public class OrderDAO {
         return Context.dbOrders.add(order);
     }
     
-    public boolean Update(Order order) {
-        if (!Context.dbOrders.contains(order))
+    public boolean Update(int id, Order order) {
+        Order save = FindById(id);
+        
+        if (save == null)
             return false;
         
-        Context.dbOrders.remove(order);
-        Context.dbOrders.add(order);
+        save.setDateHour(order.getDateHour());
+        save.setOrderItem(order.getOrderItem());
         
         return true;
     }

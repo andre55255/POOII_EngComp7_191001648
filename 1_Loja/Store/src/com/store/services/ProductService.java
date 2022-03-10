@@ -6,14 +6,33 @@ import com.store.domain.OrderItem;
 import com.store.domain.Product;
 import java.util.List;
 
-public class ProductService {
-    private final double DOLLAR_QUOTE = 5.13;
-    
-    public double calculateTax(Product product) {
+public abstract class ProductService {
+
+    public static double calculateTax(Product product) {
         return product.getValueUnitary() * product.getCategory().getTax();
     }
 
-    public int quantityProductsSoldByCategory(Category category) {
+    public static double totalTaxesProductsByCategory(Category category, boolean all) {
+        double total = 0;
+
+        List<OrderItem> items = new OrderItemDAO().FindAll();
+
+        if (all) {
+            for (OrderItem item : items) {
+                total += calculateTax(item.getProduct()) * item.getQuantity();
+            }
+        } else {
+            for (OrderItem item : items) {
+                if (item.getProduct().getCategory() == category) {
+                    total += calculateTax(item.getProduct()) * item.getQuantity();
+                }
+            }
+        }
+
+        return total;
+    }
+
+    public static int quantityProductsSoldByCategory(Category category) {
         int total = 0;
 
         List<OrderItem> items = new OrderItemDAO().FindAll();
@@ -27,7 +46,7 @@ public class ProductService {
         return total;
     }
 
-    public int quantityProductsSold() {
+    public static int quantityProductsSold() {
         int total = 0;
 
         List<OrderItem> items = new OrderItemDAO().FindAll();
@@ -39,7 +58,7 @@ public class ProductService {
         return total;
     }
 
-    public double valueProductInDollar(Product product) {
-        return product.getValueUnitary() * DOLLAR_QUOTE;
+    public static double valueProductInDollar(Product product) {
+        return product.getValueUnitary() / 5.02;
     }
 }
