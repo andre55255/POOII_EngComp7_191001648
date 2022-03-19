@@ -7,9 +7,9 @@ namespace Bakehouse.Domain.Entities
         public int Id { get; set; }
         public string BarCode { get; set; }
         public string Description { get; set; }
-        public int Quantity { get; set; }
+        public double Quantity { get; set; }
         public double ValueUnitary { get; set; }
-        public int MinQuantity { get; set; }
+        public double MinQuantity { get; set; }
 
         
         public virtual UnitOfMeasurement UnitOfMeasurement { get; set; }
