@@ -7,6 +7,7 @@ namespace Bakehouse.Infra.Data.Context
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
+        public DbSet<Log> Logs { get; set; }
         public DbSet<Movement> Movements { get; set; }
         public DbSet<OrderPad> OrderPads { get; set; }
         public DbSet<OrderPadItem> OrderPadItems { get; set; }
