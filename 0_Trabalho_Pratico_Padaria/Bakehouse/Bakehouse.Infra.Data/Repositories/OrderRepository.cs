@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Bakehouse.Infra.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository, ICategoryRepository 
+    public class OrderRepository : BaseRepository
     {
         public async Task<Result> DeleteAsync(int id)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
+                OrderPad save = await FindByIdAsync(id);
                 if (save == null)
-                    return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory);
+                    return Result.Fail(ConstantsMessagesOrderPad.ErrorInfraDataFindById);
 
-                save.DisabledAt = DateTime.Now;
+                save.DisabledAt = null;
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
@@ -28,19 +28,19 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesOrderPad.ErrorInfraDataDelete,
                                           ex.Message,
                                           this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory);
+                return Result.Fail(ConstantsMessagesOrderPad.ErrorInfraDataDelete);
             }
         }
 
-        public async Task<IEnumerable<Category>> FindAllAsync()
+        public async Task<IEnumerable<OrderPad>> FindAllAsync()
         {
             try
             {
-                List<Category> response = await _db.Categories
+                List<OrderPad> response = await _db.OrderPads
                                                    .Where(x => x.DisabledAt == null)
                                                    .ToListAsync();
 
@@ -50,7 +50,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesOrderPad.ErrorInfraDataDelete,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -58,11 +58,11 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Category> FindByIdAsync(int id)
+        public async Task<OrderPad> FindByIdAsync(int id)
         {
             try
             {
-                Category response = await _db.Categories
+                OrderPad response = await _db.OrderPads
                                              .Where(x => x.Id == id && x.DisabledAt == null)
                                              .FirstOrDefaultAsync();
 
@@ -70,7 +70,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesOrderPad.ErrorInfraDataFindById,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -78,37 +78,38 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Result> InsertAsync(Category category)
+        public async Task<Result> InsertAsync(OrderPad orderPad)
         {
             try
             {
-                category.CreatedAt = DateTime.Now;
-                category.UpdatedAt = DateTime.Now;
-                category.DisabledAt = null;
+                orderPad.CreatedAt = DateTime.Now;
+                orderPad.UpdatedAt = DateTime.Now;
+                orderPad.DisabledAt = null;
 
-                _db.Categories.Add(category);
+                _db.OrderPads.Add(orderPad);
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
-                return Result.Ok().WithSuccess(category.Id.ToString());
+                return Result.Ok().WithSuccess(orderPad.Id.ToString());
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataInsertCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesOrderPad.ErrorInfraDataInsert,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataInsertCategory);
+                return Result.Fail(ConstantsMessagesOrderPad.ErrorInfraDataInsert);
             }
         }
 
-        public async Task<Result> UpdateAsync(int id, Category category)
+        public async Task<Result> UpdateAsync(int id, OrderPad orderPad)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
-                
-                save.Description = category.Description;
+                OrderPad save = await FindByIdAsync(id);
+
+                save.DateHour = orderPad.DateHour;
+                save.UserId = orderPad.UserId;
                 save.UpdatedAt = DateTime.Now;
 
                 _db.Entry(save).State = EntityState.Modified;
@@ -119,11 +120,11 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesOrderPad.ErrorInfraDataUpdate,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory);
+                return Result.Fail(ConstantsMessagesOrderPad.ErrorInfraDataUpdate);
             }
         }
     }

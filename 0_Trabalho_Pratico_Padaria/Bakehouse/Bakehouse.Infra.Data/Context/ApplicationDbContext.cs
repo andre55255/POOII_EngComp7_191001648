@@ -7,6 +7,7 @@ namespace Bakehouse.Infra.Data.Context
     public class ApplicationDbContext : DbContext
     {
         public DbSet<Category> Categories { get; set; }
+        public DbSet<GenericType> GenericTypes { get; set; }
         public DbSet<Log> Logs { get; set; }
         public DbSet<Movement> Movements { get; set; }
         public DbSet<OrderPad> OrderPads { get; set; }
@@ -26,6 +27,7 @@ namespace Bakehouse.Infra.Data.Context
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.ApplyConfiguration(new CategoryConfiguration());
+            modelBuilder.ApplyConfiguration(new GenericTypeConfiguration());
             modelBuilder.ApplyConfiguration(new MovementConfiguration());
             modelBuilder.ApplyConfiguration(new OrderPadConfiguration());
             modelBuilder.ApplyConfiguration(new OrderPadItemConfiguration());

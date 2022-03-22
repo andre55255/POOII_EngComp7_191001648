@@ -7,10 +7,10 @@ namespace Bakehouse.Domain.Interfaces
 {
     public interface IRoleRepository
     {
-        public Task<Result> Insert(Role role);
-        public Task<Role> FindById(int id);
-        public Task<IEnumerable<Role>> FindAll();
-        public Task<Result> Delete(int id);
-        public Task<Result> Update(int id, Role role);
+        public Task<Result> InsertAsync(Role role);
+        public Task<Role> FindByIdAsync(int id);
+        public Task<IEnumerable<Role>> FindAllAsync();
+        public Task<Result> DeleteAsync(int id);
+        public Task<Result> UpdateAsync(int id, Role role);
     }
 }

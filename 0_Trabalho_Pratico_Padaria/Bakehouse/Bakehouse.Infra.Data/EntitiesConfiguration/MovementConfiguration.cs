@@ -11,7 +11,7 @@ namespace Bakehouse.Infra.Data.EntitiesConfiguration
             builder.Property(x => x.Description).HasMaxLength(255).IsRequired();
             builder.Property(x => x.DateHour).IsRequired();
             builder.Property(x => x.TotalValue).HasPrecision(10, 2).IsRequired();
-            builder.Property(x => x.Type).HasMaxLength(2).IsRequired();
+            builder.Property(x => x.GenericTypeId).IsRequired();
         }
     }
 }

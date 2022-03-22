@@ -4,7 +4,7 @@ using MySql.EntityFrameworkCore.Metadata;
 
 namespace Bakehouse.Infra.Data.Migrations
 {
-    public partial class initial : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -22,6 +22,37 @@ namespace Bakehouse.Infra.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Categories", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "GenericTypes",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
+                    Token = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Value = table.Column<double>(type: "double", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_GenericTypes", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Logs",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Description = table.Column<string>(type: "text", nullable: true),
+                    Exception = table.Column<string>(type: "text", nullable: true),
+                    Place = table.Column<string>(type: "text", nullable: true),
+                    CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Logs", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
@@ -62,8 +93,10 @@ namespace Bakehouse.Infra.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("MySQL:ValueGenerationStrategy", MySQLValueGenerationStrategy.IdentityColumn),
+                    Email = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Username = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     HashPassword = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
+                    Contacts = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     LockoutEnd = table.Column<int>(type: "int", nullable: false),
                     TokenResetPassword = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
@@ -126,7 +159,7 @@ namespace Bakehouse.Infra.Data.Migrations
                     Description = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     DateHour = table.Column<DateTime>(type: "datetime", nullable: false),
                     TotalValue = table.Column<double>(type: "double", precision: 10, scale: 2, nullable: false),
-                    Type = table.Column<string>(type: "varchar(2)", maxLength: 2, nullable: false),
+                    GenericTypeId = table.Column<int>(type: "int", nullable: false),
                     UserId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -135,6 +168,12 @@ namespace Bakehouse.Infra.Data.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_Movements", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Movements_GenericTypes_GenericTypeId",
+                        column: x => x.GenericTypeId,
+                        principalTable: "GenericTypes",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_Movements_Users_UserId",
                         column: x => x.UserId,
@@ -198,6 +237,11 @@ namespace Bakehouse.Infra.Data.Migrations
                 });
 
             migrationBuilder.CreateIndex(
+                name: "IX_Movements_GenericTypeId",
+                table: "Movements",
+                column: "GenericTypeId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movements_UserId",
                 table: "Movements",
                 column: "UserId");
@@ -236,10 +280,16 @@ namespace Bakehouse.Infra.Data.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Logs");
+
+            migrationBuilder.DropTable(
                 name: "Movements");
 
             migrationBuilder.DropTable(
                 name: "OrderPadItems");
+
+            migrationBuilder.DropTable(
+                name: "GenericTypes");
 
             migrationBuilder.DropTable(
                 name: "OrderPads");

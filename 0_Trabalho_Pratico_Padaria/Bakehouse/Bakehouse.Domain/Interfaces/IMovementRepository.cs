@@ -7,10 +7,10 @@ namespace Bakehouse.Domain.Interfaces
 {
     public interface IMovementRepository
     {
-        public Task<Result> Insert(Movement movement);
-        public Task<Movement> FindById(int id);
-        public Task<IEnumerable<Movement>> FindAll();
-        public Task<Result> Delete(int id);
-        public Task<Result> Update(int id, Movement movement);
+        public Task<Result> InsertAsync(Movement movement);
+        public Task<Movement> FindByIdAsync(int id);
+        public Task<IEnumerable<Movement>> FindAllAsync();
+        public Task<Result> DeleteAsync(int id);
+        public Task<Result> UpdateAsync(int id, Movement movement);
     }
 }

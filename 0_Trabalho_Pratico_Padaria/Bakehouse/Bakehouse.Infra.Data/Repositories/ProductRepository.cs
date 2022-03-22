@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Bakehouse.Infra.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository, ICategoryRepository 
+    public class ProductRepository : BaseRepository, IProductRepository
     {
         public async Task<Result> DeleteAsync(int id)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
+                Product save = await FindByIdAsync(id);
                 if (save == null)
-                    return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory);
+                    return Result.Fail(ConstantsMessagesProduct.ErrorInfraDataFindById);
 
-                save.DisabledAt = DateTime.Now;
+                save.DisabledAt = null;
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
@@ -28,21 +28,21 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesProduct.ErrorInfraDataDelete,
                                           ex.Message,
                                           this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory);
+                return Result.Fail(ConstantsMessagesProduct.ErrorInfraDataDelete);
             }
         }
 
-        public async Task<IEnumerable<Category>> FindAllAsync()
+        public async Task<IEnumerable<Product>> FindAllAsync()
         {
             try
             {
-                List<Category> response = await _db.Categories
-                                                   .Where(x => x.DisabledAt == null)
-                                                   .ToListAsync();
+                List<Product> response = await _db.Products
+                                                  .Where(x => x.DisabledAt == null)
+                                                  .ToListAsync();
 
                 _db.Dispose();
 
@@ -50,7 +50,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesProduct.ErrorInfraDataDelete,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -58,19 +58,19 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Category> FindByIdAsync(int id)
+        public async Task<Product> FindByIdAsync(int id)
         {
             try
             {
-                Category response = await _db.Categories
-                                             .Where(x => x.Id == id && x.DisabledAt == null)
-                                             .FirstOrDefaultAsync();
+                Product response = await _db.Products
+                                            .Where(x => x.Id == id && x.DisabledAt == null)
+                                            .FirstOrDefaultAsync();
 
                 return response;
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesProduct.ErrorInfraDataFindById,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -78,37 +78,41 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Result> InsertAsync(Category category)
+        public async Task<Result> InsertAsync(Product product)
         {
             try
             {
-                category.CreatedAt = DateTime.Now;
-                category.UpdatedAt = DateTime.Now;
-                category.DisabledAt = null;
+                product.CreatedAt = DateTime.Now;
+                product.UpdatedAt = DateTime.Now;
+                product.DisabledAt = null;
 
-                _db.Categories.Add(category);
+                _db.Products.Add(product);
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
-                return Result.Ok().WithSuccess(category.Id.ToString());
+                return Result.Ok().WithSuccess(product.Id.ToString());
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataInsertCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesProduct.ErrorInfraDataInsert,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataInsertCategory);
+                return Result.Fail(ConstantsMessagesProduct.ErrorInfraDataInsert);
             }
         }
 
-        public async Task<Result> UpdateAsync(int id, Category category)
+        public async Task<Result> UpdateAsync(int id, Product product)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
-                
-                save.Description = category.Description;
+                Product save = await FindByIdAsync(id);
+
+                save.BarCode = product.BarCode;
+                save.Description = product.Description;
+                save.Quantity = product.Quantity;
+                save.ValueUnitary = product.ValueUnitary;
+                save.MinQuantity = product.MinQuantity;
                 save.UpdatedAt = DateTime.Now;
 
                 _db.Entry(save).State = EntityState.Modified;
@@ -119,11 +123,11 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesProduct.ErrorInfraDataUpdate,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory);
+                return Result.Fail(ConstantsMessagesProduct.ErrorInfraDataUpdate);
             }
         }
     }

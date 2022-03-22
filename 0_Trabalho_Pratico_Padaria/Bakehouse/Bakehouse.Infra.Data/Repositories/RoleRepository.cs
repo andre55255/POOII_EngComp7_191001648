@@ -10,17 +10,17 @@ using System.Threading.Tasks;
 
 namespace Bakehouse.Infra.Data.Repositories
 {
-    public class CategoryRepository : BaseRepository, ICategoryRepository 
+    public class RoleRepository : BaseRepository, IRoleRepository
     {
         public async Task<Result> DeleteAsync(int id)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
+                Role save = await FindByIdAsync(id);
                 if (save == null)
-                    return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory);
+                    return Result.Fail(ConstantsMessagesRole.ErrorInfraDataFindById);
 
-                save.DisabledAt = DateTime.Now;
+                save.DisabledAt = null;
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
@@ -28,21 +28,21 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesRole.ErrorInfraDataDelete,
                                           ex.Message,
                                           this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory);
+                return Result.Fail(ConstantsMessagesRole.ErrorInfraDataDelete);
             }
         }
 
-        public async Task<IEnumerable<Category>> FindAllAsync()
+        public async Task<IEnumerable<Role>> FindAllAsync()
         {
             try
             {
-                List<Category> response = await _db.Categories
-                                                   .Where(x => x.DisabledAt == null)
-                                                   .ToListAsync();
+                List<Role> response = await _db.Roles
+                                               .Where(x => x.DisabledAt == null)
+                                               .ToListAsync();
 
                 _db.Dispose();
 
@@ -50,7 +50,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataDeleteCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesRole.ErrorInfraDataDelete,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -58,19 +58,19 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Category> FindByIdAsync(int id)
+        public async Task<Role> FindByIdAsync(int id)
         {
             try
             {
-                Category response = await _db.Categories
-                                             .Where(x => x.Id == id && x.DisabledAt == null)
-                                             .FirstOrDefaultAsync();
+                Role response = await _db.Roles
+                                         .Where(x => x.Id == id && x.DisabledAt == null)
+                                         .FirstOrDefaultAsync();
 
                 return response;
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataFindByIdCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesRole.ErrorInfraDataFindById,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
@@ -78,37 +78,37 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Result> InsertAsync(Category category)
+        public async Task<Result> InsertAsync(Role role)
         {
             try
             {
-                category.CreatedAt = DateTime.Now;
-                category.UpdatedAt = DateTime.Now;
-                category.DisabledAt = null;
+                role.CreatedAt = DateTime.Now;
+                role.UpdatedAt = DateTime.Now;
+                role.DisabledAt = null;
 
-                _db.Categories.Add(category);
+                _db.Roles.Add(role);
                 await _db.SaveChangesAsync();
                 _db.Dispose();
 
-                return Result.Ok().WithSuccess(category.Id.ToString());
+                return Result.Ok().WithSuccess(role.Id.ToString());
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataInsertCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesRole.ErrorInfraDataInsert,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataInsertCategory);
+                return Result.Fail(ConstantsMessagesRole.ErrorInfraDataInsert);
             }
         }
 
-        public async Task<Result> UpdateAsync(int id, Category category)
+        public async Task<Result> UpdateAsync(int id, Role role)
         {
             try
             {
-                Category save = await FindByIdAsync(id);
-                
-                save.Description = category.Description;
+                Role save = await FindByIdAsync(id);
+
+                save.Description = role.Description;
                 save.UpdatedAt = DateTime.Now;
 
                 _db.Entry(save).State = EntityState.Modified;
@@ -119,11 +119,11 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory,
+                await LogRepository.RegisterLog(ConstantsMessagesRole.ErrorInfraDataUpdate,
                                                   ex.Message,
                                                   this.GetType().ToString());
 
-                return Result.Fail(ConstantsMessagesCategory.ErrorInfraDataUpdateCategory);
+                return Result.Fail(ConstantsMessagesRole.ErrorInfraDataUpdate);
             }
         }
     }

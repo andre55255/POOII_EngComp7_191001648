@@ -7,14 +7,15 @@ namespace Bakehouse.Domain.Interfaces
 {
     public interface IUserRepository
     {
-        public Task<Result> Insert(User user);
-        public Task<User> FindById(int id);
-        public Task<IEnumerable<User>> FindAll();
-        public Task<Result> Delete(int id);
-        public Task<Result> Update(int id, User user);
-        public Task<Result> SignIn(User user);
-        public Task<Result> ResetPasswordGenerateToken(User user);
-        public Task<Result> ResetPasswordTo(User user, string newHashPassword);
+        public Task<Result> InsertAsync(User user);
+        public Task<User> FindByIdAsync(int id);
+        public Task<User> FindByEmailAsync(string email);
+        public Task<IEnumerable<User>> FindAllAsync();
+        public Task<Result> DeleteAsync(int id);
+        public Task<Result> UpdateAsync(int id, User user);
+        public Task<Result> SignInAsync(User user);
+        public Task<Result> ResetPasswordGenerateTokenAsync(User user);
+        public Task<Result> ResetPasswordToAsync(User user, string newHashPassword);
 
     }
 }

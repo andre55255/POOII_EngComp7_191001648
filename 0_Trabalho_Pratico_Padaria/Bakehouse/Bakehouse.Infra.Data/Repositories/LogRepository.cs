@@ -12,7 +12,6 @@ namespace Bakehouse.Infra.Data.Repositories
             ApplicationDbContext db = new ApplicationDbContext();
             try
             {
-
                 Log log = new Log
                 {
                     Description = description,

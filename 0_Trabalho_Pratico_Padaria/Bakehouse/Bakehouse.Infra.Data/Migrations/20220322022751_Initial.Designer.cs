@@ -9,8 +9,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bakehouse.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220319013017_initial")]
-    partial class initial
+    [Migration("20220322022751_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -44,6 +44,52 @@ namespace Bakehouse.Infra.Data.Migrations
                     b.ToTable("Categories");
                 });
 
+            modelBuilder.Entity("Bakehouse.Domain.Entities.GenericType", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
+                    b.Property<double?>("Value")
+                        .HasColumnType("double");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("GenericTypes");
+                });
+
+            modelBuilder.Entity("Bakehouse.Domain.Entities.Log", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<DateTime>("CreatedAt")
+                        .HasColumnType("datetime");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Exception")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Place")
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Logs");
+                });
+
             modelBuilder.Entity("Bakehouse.Domain.Entities.Movement", b =>
                 {
                     b.Property<int>("Id")
@@ -64,14 +110,12 @@ namespace Bakehouse.Infra.Data.Migrations
                     b.Property<DateTime?>("DisabledAt")
                         .HasColumnType("datetime");
 
+                    b.Property<int>("GenericTypeId")
+                        .HasColumnType("int");
+
                     b.Property<double>("TotalValue")
                         .HasPrecision(10, 2)
                         .HasColumnType("double");
-
-                    b.Property<string>("Type")
-                        .IsRequired()
-                        .HasMaxLength(2)
-                        .HasColumnType("varchar(2)");
 
                     b.Property<DateTime>("UpdatedAt")
                         .HasColumnType("datetime");
@@ -80,6 +124,8 @@ namespace Bakehouse.Infra.Data.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("GenericTypeId");
 
                     b.HasIndex("UserId");
 
@@ -260,11 +306,20 @@ namespace Bakehouse.Infra.Data.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<string>("Contacts")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
+
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime");
 
                     b.Property<DateTime?>("DisabledAt")
                         .HasColumnType("datetime");
+
+                    b.Property<string>("Email")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar(255)");
 
                     b.Property<string>("HashPassword")
                         .IsRequired()
@@ -302,11 +357,19 @@ namespace Bakehouse.Infra.Data.Migrations
 
             modelBuilder.Entity("Bakehouse.Domain.Entities.Movement", b =>
                 {
+                    b.HasOne("Bakehouse.Domain.Entities.GenericType", "GenericType")
+                        .WithMany("Movements")
+                        .HasForeignKey("GenericTypeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.HasOne("Bakehouse.Domain.Entities.User", "User")
                         .WithMany("Movements")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("GenericType");
 
                     b.Navigation("User");
                 });
@@ -374,6 +437,11 @@ namespace Bakehouse.Infra.Data.Migrations
             modelBuilder.Entity("Bakehouse.Domain.Entities.Category", b =>
                 {
                     b.Navigation("Product");
+                });
+
+            modelBuilder.Entity("Bakehouse.Domain.Entities.GenericType", b =>
+                {
+                    b.Navigation("Movements");
                 });
 
             modelBuilder.Entity("Bakehouse.Domain.Entities.OrderPad", b =>

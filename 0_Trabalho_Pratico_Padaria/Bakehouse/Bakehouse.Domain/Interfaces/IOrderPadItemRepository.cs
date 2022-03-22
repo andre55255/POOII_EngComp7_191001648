@@ -7,10 +7,10 @@ namespace Bakehouse.Domain.Interfaces
 {
     public interface IOrderPadItemRepository
     {
-        public Task<Result> Insert(OrderPadItem item);
-        public Task<OrderPadItem> FindById(int id);
-        public Task<IEnumerable<OrderPadItem>> FindAll();
-        public Task<Result> Delete(int id);
-        public Task<Result> Update(int id, OrderPadItem item);
+        public Task<Result> InsertAsync(OrderPadItem item);
+        public Task<OrderPadItem> FindByIdAsync(int id);
+        public Task<IEnumerable<OrderPadItem>> FindAllAsync();
+        public Task<Result> DeleteAsync(int id);
+        public Task<Result> UpdateAsync(int id, OrderPadItem item);
     }
 }

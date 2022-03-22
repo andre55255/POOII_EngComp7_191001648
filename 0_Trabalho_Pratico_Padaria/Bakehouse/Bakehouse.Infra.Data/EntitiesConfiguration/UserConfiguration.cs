@@ -9,6 +9,8 @@ namespace Bakehouse.Infra.Data.EntitiesConfiguration
         public void Configure(EntityTypeBuilder<User> builder)
         {
             builder.Property(x => x.Username).HasMaxLength(255).IsRequired();
+            builder.Property(x => x.Email).HasMaxLength(255).IsRequired();
+            builder.Property(x => x.Contacts).HasMaxLength(255).IsRequired(false);
             builder.Property(x => x.HashPassword).HasMaxLength(255).IsRequired();
             builder.Property(x => x.Status).IsRequired();
             builder.Property(x => x.LockoutEnd).IsRequired();
