@@ -9,7 +9,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace Bakehouse.Infra.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20220322022751_Initial")]
+    [Migration("20220324011453_Initial")]
     partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -273,6 +273,15 @@ namespace Bakehouse.Infra.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Roles");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 3, 23, 22, 14, 52, 115, DateTimeKind.Local).AddTicks(8219),
+                            Description = "ADMIN",
+                            UpdatedAt = new DateTime(2022, 3, 23, 22, 14, 52, 117, DateTimeKind.Local).AddTicks(5094)
+                        });
                 });
 
             modelBuilder.Entity("Bakehouse.Domain.Entities.UnitOfMeasurement", b =>
@@ -336,7 +345,6 @@ namespace Bakehouse.Infra.Data.Migrations
                         .HasColumnType("tinyint(1)");
 
                     b.Property<string>("TokenResetPassword")
-                        .IsRequired()
                         .HasMaxLength(500)
                         .HasColumnType("varchar(500)");
 
@@ -353,6 +361,20 @@ namespace Bakehouse.Infra.Data.Migrations
                     b.HasIndex("RoleId");
 
                     b.ToTable("Users");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CreatedAt = new DateTime(2022, 3, 23, 22, 14, 52, 130, DateTimeKind.Local).AddTicks(9152),
+                            Email = "admin@bakehouse.com.br",
+                            HashPassword = "5C06EB3D5A05A19F49476D694CA81A36344660E9D5B98E3D6A6630F31C2422E7",
+                            LockoutEnd = 0,
+                            RoleId = 1,
+                            Status = false,
+                            UpdatedAt = new DateTime(2022, 3, 23, 22, 14, 52, 130, DateTimeKind.Local).AddTicks(9189),
+                            Username = "ADMIN"
+                        });
                 });
 
             modelBuilder.Entity("Bakehouse.Domain.Entities.Movement", b =>

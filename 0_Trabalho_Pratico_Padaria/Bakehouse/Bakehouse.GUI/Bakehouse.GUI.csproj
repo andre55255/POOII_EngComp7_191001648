@@ -5,14 +5,15 @@
     <TargetFramework>net5.0-windows</TargetFramework>
     <Nullable>enable</Nullable>
     <UseWindowsForms>true</UseWindowsForms>
+    <ApplicationIcon>Content\Assets\favicon.ico</ApplicationIcon>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="FluentResults" Version="3.2.0" />
+    <Content Include="Content\Assets\favicon.ico" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Bakehouse.Application\Bakehouse.Application.csproj" />
+    <ProjectReference Include="..\Bakehouse.Application\Bakehouse.App.csproj" />
   </ItemGroup>
 
   <ItemGroup>

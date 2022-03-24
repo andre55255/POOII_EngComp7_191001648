@@ -99,7 +99,7 @@ namespace Bakehouse.Infra.Data.Migrations
                     Contacts = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
                     Status = table.Column<bool>(type: "tinyint(1)", nullable: false),
                     LockoutEnd = table.Column<int>(type: "int", nullable: false),
-                    TokenResetPassword = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: false),
+                    TokenResetPassword = table.Column<string>(type: "varchar(500)", maxLength: 500, nullable: true),
                     RoleId = table.Column<int>(type: "int", nullable: false),
                     CreatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
                     UpdatedAt = table.Column<DateTime>(type: "datetime", nullable: false),
@@ -235,6 +235,16 @@ namespace Bakehouse.Infra.Data.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
+
+            migrationBuilder.InsertData(
+                table: "Roles",
+                columns: new[] { "Id", "CreatedAt", "Description", "DisabledAt", "UpdatedAt" },
+                values: new object[] { 1, new DateTime(2022, 3, 23, 22, 14, 52, 115, DateTimeKind.Local).AddTicks(8219), "ADMIN", null, new DateTime(2022, 3, 23, 22, 14, 52, 117, DateTimeKind.Local).AddTicks(5094) });
+
+            migrationBuilder.InsertData(
+                table: "Users",
+                columns: new[] { "Id", "Contacts", "CreatedAt", "DisabledAt", "Email", "HashPassword", "LockoutEnd", "RoleId", "Status", "TokenResetPassword", "UpdatedAt", "Username" },
+                values: new object[] { 1, null, new DateTime(2022, 3, 23, 22, 14, 52, 130, DateTimeKind.Local).AddTicks(9152), null, "admin@bakehouse.com.br", "5C06EB3D5A05A19F49476D694CA81A36344660E9D5B98E3D6A6630F31C2422E7", 0, 1, false, null, new DateTime(2022, 3, 23, 22, 14, 52, 130, DateTimeKind.Local).AddTicks(9189), "ADMIN" });
 
             migrationBuilder.CreateIndex(
                 name: "IX_Movements_GenericTypeId",

@@ -47,13 +47,32 @@ namespace Bakehouse.Infra.Data.Repositories
                                      .Where(x => x.Email == email && x.DisabledAt == null)
                                      .FirstOrDefaultAsync();
 
-                _db.Dispose();
-
                 return user;
             }
             catch (Exception ex)
             {
                 await LogRepository.RegisterLog(ConstantsMessagesUser.ErrorInfraDataFindByEmail,
+                                          ex.Message,
+                                          this.GetType().ToString());
+
+                return null;
+            }
+        }
+
+        public async Task<User> FindByUsernameAsync(string username)
+        {
+            try
+            {
+                User user = await _db.Users
+                                     .Where(x => x.Username == username && 
+                                                 x.DisabledAt == null)
+                                     .FirstOrDefaultAsync();
+
+                return user;
+            }
+            catch (Exception ex)
+            {
+                await LogRepository.RegisterLog(ConstantsMessagesUser.ErrorInfraDataFindByUsername,
                                           ex.Message,
                                           this.GetType().ToString());
 
@@ -179,7 +198,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<Result> SignInAsync(User user)
+        public async Task<Result> SignInAsync(User user, string passwordDigit)
         {
             try
             {
@@ -188,13 +207,12 @@ namespace Bakehouse.Infra.Data.Repositories
                 if (save.Username != user.Username)
                     return Result.Fail(ConstantsMessagesUser.ErrorInfraDataUserInvalid);
 
-                if (save.LockoutEnd > 5 && 
-                    save.UpdatedAt.AddMinutes(15) <= DateTime.Now)
+                if (save.LockoutEnd > 5)
                 {
                     return Result.Fail(ConstantsMessagesUser.ErrorInfraDataLockoutEnded);
                 }
 
-                if (StaticMethods.VerifyPassword(user.HashPassword, save.HashPassword))
+                if (StaticMethods.VerifyPassword(passwordDigit, save.HashPassword))
                 {
                     save.Status = true;
                     await _db.SaveChangesAsync();

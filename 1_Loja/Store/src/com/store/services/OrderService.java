@@ -1,7 +1,6 @@
 package com.store.services;
 
 import com.store.dao.OrderDAO;
-import com.store.dao.OrderItemDAO;
 import com.store.dao.ProductDAO;
 import com.store.domain.Category;
 import com.store.domain.Order;

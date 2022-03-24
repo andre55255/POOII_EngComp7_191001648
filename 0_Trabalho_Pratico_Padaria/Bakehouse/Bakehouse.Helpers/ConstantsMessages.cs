@@ -79,6 +79,7 @@
         public static string ErrorInfraDataFindById = "Ocorreu um erro ao buscar um novo usuário por id no Infra Data";
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar a lista de todos os usuários no Infra Data";
         public static string ErrorInfraDataFindByEmail = "Ocorreu um erro ao buscar um novo usuário por email no Infra Data";
+        public static string ErrorInfraDataFindByUsername = "Ocorreu um erro ao buscar um novo usuário por username no Infra Data";
         public static string ErrorInfraDataGenerateToken = "Ocorreu um erro ao gerar token para recuperação de senha no Infra Data";
         public static string ErrorInfraDataResetPassword = "Ocorreu um erro ao redefinir a senha no Infra Data";
         public static string ErrorInfraDataTokenResetPasswordIncorrect = "Token de redefinição de senha inválido ou incorreto";
@@ -86,5 +87,7 @@
         public static string ErrorInfraDataUserInvalid = "Ocorreu um erro ao validar dados de usuário";
         public static string ErrorInfraDataSignInPasswordIncorrect = "Senha incorreta, tentativas: ";
         public static string ErrorInfraDataLockoutEnded = "Você excedeu o número de tentativas para redefinir senha, redefina a senha para logar";
+        public static string ErrorBBLSignIn = "Ocorreu um erro ao logar usuário: ";
+        public static string ErrorBBLUserNotFound = "Usuário não encontrado no banco";
     }
 }
