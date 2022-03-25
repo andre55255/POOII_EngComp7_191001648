@@ -1,4 +1,5 @@
 ﻿using Bakehouse.Domain.Entities;
+using Bakehouse.Helpers;
 using Bakehouse.Infra.Data.EntitiesConfiguration;
 using Microsoft.EntityFrameworkCore;
 
@@ -6,6 +7,22 @@ namespace Bakehouse.Infra.Data.Context
 {
     public class ApplicationDbContext : DbContext
     {
+        // Singleton
+        private static ApplicationDbContext _db;
+
+        private ApplicationDbContext() : base()
+        {
+        }
+
+        public static ApplicationDbContext GetInstance()
+        {
+            if (_db == null)
+            {
+                _db = new ApplicationDbContext();
+            }
+            return _db;
+        }
+
         public DbSet<Category> Categories { get; set; }
         public DbSet<GenericType> GenericTypes { get; set; }
         public DbSet<Log> Logs { get; set; }
@@ -19,7 +36,7 @@ namespace Bakehouse.Infra.Data.Context
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            optionsBuilder.UseMySQL("server=localhost;database=bakehouse_db;user=root;password=root");
+            optionsBuilder.UseMySQL(ConstantsSettings.ConnectionDB);
         }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)

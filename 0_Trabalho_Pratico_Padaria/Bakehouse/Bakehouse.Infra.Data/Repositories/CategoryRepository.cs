@@ -22,7 +22,6 @@ namespace Bakehouse.Infra.Data.Repositories
 
                 save.DisabledAt = DateTime.Now;
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(save.Id.ToString());
             }
@@ -43,8 +42,6 @@ namespace Bakehouse.Infra.Data.Repositories
                 List<Category> response = await _db.Categories
                                                    .Where(x => x.DisabledAt == null)
                                                    .ToListAsync();
-
-                _db.Dispose();
 
                 return response;
             }
@@ -88,7 +85,6 @@ namespace Bakehouse.Infra.Data.Repositories
 
                 _db.Categories.Add(category);
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(category.Id.ToString());
             }
@@ -113,7 +109,6 @@ namespace Bakehouse.Infra.Data.Repositories
 
                 _db.Entry(save).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(save.Id.ToString());
             }

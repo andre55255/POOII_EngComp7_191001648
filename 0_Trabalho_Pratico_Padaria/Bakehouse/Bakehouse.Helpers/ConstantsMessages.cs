@@ -1,5 +1,10 @@
 ﻿namespace Bakehouse.Helpers
 {
+    public static class ConstantsSettings
+    {
+        public static string ConnectionDB = "server=localhost;database=bakehouse_db;user=root;password=root";
+    }
+    
     public static class ConstantsMessagesCategory
     {
         // Infra Data
@@ -88,6 +93,8 @@
         public static string ErrorInfraDataSignInPasswordIncorrect = "Senha incorreta, tentativas: ";
         public static string ErrorInfraDataLockoutEnded = "Você excedeu o número de tentativas para redefinir senha, redefina a senha para logar";
         public static string ErrorBBLSignIn = "Ocorreu um erro ao logar usuário: ";
+        public static string ErrorBBLResetPasswordGenerateToken = "Ocorreu um erro ao gerar token de recuperação de senha, Username: ";
+        public static string ErrorBBLResetPasswordTo = "Ocorreu um erro ao trocar a senha deste usuário, Username: ";
         public static string ErrorBBLUserNotFound = "Usuário não encontrado no banco";
     }
 }

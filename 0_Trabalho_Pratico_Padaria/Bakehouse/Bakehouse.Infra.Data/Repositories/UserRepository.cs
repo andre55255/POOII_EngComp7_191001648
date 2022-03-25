@@ -25,7 +25,6 @@ namespace Bakehouse.Infra.Data.Repositories
 
                 _db.Entry(user).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(user.Id.ToString());
             }
@@ -88,8 +87,6 @@ namespace Bakehouse.Infra.Data.Repositories
                                             .Where(x => x.DisabledAt == null)
                                             .ToListAsync();
 
-                _db.Dispose();
-
                 return users;
             }
             catch (Exception ex)
@@ -128,7 +125,6 @@ namespace Bakehouse.Infra.Data.Repositories
             {
                 _db.Users.Add(user);
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(user.Id.ToString());
             }
@@ -151,7 +147,6 @@ namespace Bakehouse.Infra.Data.Repositories
                 User save = await FindByIdAsync(user.Id);
                 save.TokenResetPassword = token;
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(token);
             }
@@ -179,7 +174,6 @@ namespace Bakehouse.Infra.Data.Repositories
                     save.UpdatedAt = DateTime.Now;
                     _db.Entry(save).State = EntityState.Modified;
                     await _db.SaveChangesAsync();
-                    _db.Dispose();
 
                     return Result.Ok();
                 } 
@@ -216,7 +210,6 @@ namespace Bakehouse.Infra.Data.Repositories
                 {
                     save.Status = true;
                     await _db.SaveChangesAsync();
-                    _db.Dispose();
 
                     return Result.Ok().WithSuccess(save.Id.ToString());
                 }
@@ -226,7 +219,6 @@ namespace Bakehouse.Infra.Data.Repositories
                     save.LockoutEnd += 1;
                     save.UpdatedAt = DateTime.Now;
                     await _db.SaveChangesAsync();
-                    _db.Dispose();
 
                     return Result.Fail(ConstantsMessagesUser.ErrorInfraDataSignInPasswordIncorrect 
                                         + save.LockoutEnd);
@@ -257,7 +249,6 @@ namespace Bakehouse.Infra.Data.Repositories
 
                 _db.Entry(save).State = EntityState.Modified;
                 await _db.SaveChangesAsync();
-                _db.Dispose();
 
                 return Result.Ok().WithSuccess(save.Id.ToString());
             }

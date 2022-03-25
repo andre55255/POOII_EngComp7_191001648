@@ -8,7 +8,7 @@ namespace Bakehouse.Infra.Data.Repositories
 
         public BaseRepository()
         {
-            _db = new ApplicationDbContext();
+            _db = ApplicationDbContext.GetInstance();
         }
     }
 }

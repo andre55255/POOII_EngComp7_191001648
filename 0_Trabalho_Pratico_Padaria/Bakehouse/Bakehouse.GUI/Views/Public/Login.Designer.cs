@@ -129,6 +129,7 @@
             this.lblResetPassword.Size = new System.Drawing.Size(131, 17);
             this.lblResetPassword.TabIndex = 8;
             this.lblResetPassword.Text = "Esqueceu sua senha?";
+            this.lblResetPassword.Click += new System.EventHandler(this.lblResetPassword_Click);
             this.lblResetPassword.MouseEnter += new System.EventHandler(this.lblResetPassword_MouseEnter);
             this.lblResetPassword.MouseLeave += new System.EventHandler(this.lblResetPassword_MouseLeave);
             // 

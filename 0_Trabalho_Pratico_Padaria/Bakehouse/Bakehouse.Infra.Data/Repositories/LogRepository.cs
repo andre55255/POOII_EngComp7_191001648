@@ -9,7 +9,7 @@ namespace Bakehouse.Infra.Data.Repositories
     {
         public static async Task RegisterLog(string description, string exception, string place)
         {
-            ApplicationDbContext db = new ApplicationDbContext();
+            ApplicationDbContext db = ApplicationDbContext.GetInstance();
             try
             {
                 Log log = new Log
@@ -25,10 +25,6 @@ namespace Bakehouse.Infra.Data.Repositories
             }
             catch (Exception)
             {
-            }
-            finally
-            {
-                db.Dispose();
             }
         }
     }
