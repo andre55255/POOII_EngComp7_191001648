@@ -1,4 +1,5 @@
-﻿using Bakehouse.App.ViewObjects.User;
+﻿using Bakehouse.App.ViewObjects.Email;
+using Bakehouse.App.ViewObjects.User;
 using Bakehouse.Domain.Entities;
 using Bakehouse.Helpers;
 using Bakehouse.Infra.Data.Repositories;
@@ -12,10 +13,12 @@ namespace Bakehouse.App.BBLs
     public class UserBBL
     {
         private UserRepository _userRepo;
+        private EmailBBL _emailBBL;
 
         public UserBBL()
         {
             _userRepo = new UserRepository();
+            _emailBBL = new EmailBBL();
         }
 
         public async Task<Result> SignInAsync(CreateUserVO userVO)
@@ -64,7 +67,17 @@ namespace Bakehouse.App.BBLs
                 else
                 {
                     string token = result.Successes.FirstOrDefault().Message;
-                    // Implementar envio de email com o token
+
+                    EmailDataVO mailVO = new EmailDataVO
+                    {
+                        Email = user.Email,
+                        NameUser = user.Username,
+                        Token = token
+                    };
+                    Result isEmailSent = await _emailBBL.SendMailResetPassword(mailVO);
+
+                    if (isEmailSent.IsFailed)
+                        return Result.Fail(isEmailSent.Errors.FirstOrDefault().Message);
 
                     return Result.Ok().WithSuccess(user.Username+","+user.Email);
                 }
@@ -90,6 +103,9 @@ namespace Bakehouse.App.BBLs
                     if (user == null)
                         return Result.Fail(ConstantsMessagesUser.ErrorBBLUserNotFound);
 
+                    if (user.TokenResetPassword != userVO.Token)
+                        return Result.Fail(ConstantsMessagesUser.ErrorBBLResetPasswordTokenInvalid + user.Email);
+                    
                     Result result = await _userRepo.ResetPasswordToAsync(user, userVO.Password);
                     if (result.IsFailed)
                         return Result.Fail(result.Errors.FirstOrDefault().Message);

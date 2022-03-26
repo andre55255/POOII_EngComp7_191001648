@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
@@ -66,20 +67,37 @@ namespace Bakehouse.GUI
                     string error = result.Errors.FirstOrDefault().Message;
                     MessageBoxCustom.Error(error);
                 }
-            } 
+            }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog("Erro inesperado na tela de login, username: "+txtUsername.Text,
+                await LogRepository.RegisterLog("Erro inesperado na tela de login, username: " + txtUsername.Text,
                                           ex.Message,
                                           this.GetType().ToString());
                 MessageBoxCustom.Error("Erro inesperado");
             }
         }
 
-        private void lblResetPassword_Click(object sender, EventArgs e)
+        private async void lblResetPassword_Click(object sender, EventArgs e)
         {
-            new ResetPasswordGenerateToken().Visible = true;
-            this.Visible = false;
+            try
+            {
+                this.Close();
+                Thread thread = new Thread(OpenWindowResetPasswordGenerateToken);
+                thread.SetApartmentState(ApartmentState.STA);
+                thread.Start();
+            }
+            catch (Exception ex)
+            {
+                await LogRepository.RegisterLog("Erro ao abrir janela de recuperacao de senha, geração de token",
+                                          ex.Message,
+                                          this.GetType().ToString());
+                MessageBoxCustom.Error("Erro inesperado");
+            }
+        }
+
+        private void OpenWindowResetPasswordGenerateToken()
+        {
+            Application.Run(new ResetPasswordGenerateToken());
         }
     }
 }

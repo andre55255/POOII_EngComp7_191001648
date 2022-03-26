@@ -3,8 +3,12 @@
     public static class ConstantsSettings
     {
         public static string ConnectionDB = "server=localhost;database=bakehouse_db;user=root;password=root";
+        public static string EmailLogin = "lafabank135@gmail.com";
+        public static string EmailPassword = "unipacbank@135";
+        public static string EmailSmtp = "smtp.gmail.com";
+        public static string EmailPort = "587";
     }
-    
+
     public static class ConstantsMessagesCategory
     {
         // Infra Data
@@ -95,6 +99,21 @@
         public static string ErrorBBLSignIn = "Ocorreu um erro ao logar usuário: ";
         public static string ErrorBBLResetPasswordGenerateToken = "Ocorreu um erro ao gerar token de recuperação de senha, Username: ";
         public static string ErrorBBLResetPasswordTo = "Ocorreu um erro ao trocar a senha deste usuário, Username: ";
+        public static string ErrorBBLResetPasswordTokenInvalid = "Token diferente do enviado para email: ";
         public static string ErrorBBLUserNotFound = "Usuário não encontrado no banco";
+    }
+
+    public static class ConstantsMessagesEmail
+    {
+        public static string SubjectResetPassword = "Solicitação para redefinição de senha";
+
+        public static string ErrorBBLLoadTemplate = "Ocorreu um erro ao carregar o template de envio de email.";
+        public static string ErrorBBLInformationsNotFound = "Ocorreu um erro ao obter dados para envio de email.";
+        public static string ErrorBBLSendMail = "Ocorreu um erro no serviço de enviar o email.";
+    }
+
+    public static class Templates
+    {
+        public static string TemplateEmailResetPassword = "<!DOCTYPE html><html lang='pt-br'><head><meta charset='UTF-8'><meta name='viewport' content='width=device-width, initial-scale=1.0'><title>Bakehouse</title></head><html><body><div style='font-family: sans-serif; font-family: 14px; line-height: 1.8; color: #0b4f6c; max-width: 700px; margin-right: auto; margin-left: auto; border-color: #4A1375; border-width: 1px; border-style: solid;'><div style='display: block;text-align: center;background-color: #0b4f6c; padding-top: 7px; padding-bottom: 3px;'><span style='color: #fff'>Bakehouse</span></div><div style='display: block;text-align: center;padding: 20px 70px;'><h1 style='font-weight: 800;font-size: 24px;line-height: 120%;text-align: center;color: #0b4f6c;'>Redefinição de senha</h1><p style='font-style: normal;font-weight: normal;font-size: 24px;line-height: 160%;text-align: center;color: #0b4f6c;'>Olá [[NAME]] :-)</p><p style='font-style: normal;font-weight: normal;font-size: 16px;line-height: 160%;text-align: center;color: #0b4f6c;'>Recebemos uma solicitação para que sua senha fosse redefinida, segue o token de redefinição de senha.</p></span><br /><span style='font-style: normal;font-weight: bold ;font-size: 16px;line-height: 160%;text-align: center;color: #0b4f6c;word-wrap: break-word;'>[[TOKEN]]</span></p><br /></div><div style='margin-top:20px;text-align: center;display: block;align-items: center;justify-content: center;background-color: #F1F2F2; padding: 20px 10px;'><p style='font-family: sans-serif; font-family: 14px;font-style: normal;font-weight: normal;font-size: 23px;line-height: 31px;text-align: center;letter-spacing: 0.01em;color: #0b4f6c;'>Ficou com alguma dúvida? <a style='text-decoration: underline;color: #0b4f6c' href='mailto:bakehouse55255@gmail.com'>Fale com agente.</a></p><span>Equipe de suporte Bakehouse<span></div></div></body></html>";
     }
 }

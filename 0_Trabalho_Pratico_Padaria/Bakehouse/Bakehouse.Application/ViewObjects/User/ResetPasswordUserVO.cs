@@ -7,6 +7,7 @@ namespace Bakehouse.App.ViewObjects.User
     {
         public string Username { get; set; }
         public string Email { get; set; }
+        public string Token { get; set; }
         public string Password { get; set; }
         public string RePassword { get; set; }
 
@@ -15,6 +16,8 @@ namespace Bakehouse.App.ViewObjects.User
             StringBuilder errors = new StringBuilder();
             if (Username == null || Username.Trim().Length <= 0)
                 errors.AppendLine("Nome do usuário deve ser informado.");
+            if (Token == null || Token.Trim().Length <= 0)
+                errors.AppendLine("Token de redefinição de senha deve ser informado");
             if (Email == null || Email.Trim().Length <= 0)
                 errors.AppendLine("Email do usuário deve ser informado.");
             if (Password == null || Password.Trim().Length <= 0)

@@ -1,4 +1,5 @@
 ﻿using Bakehouse.App.BBLs;
+using Bakehouse.App.ViewObjects.User;
 using Bakehouse.GUI.Utils;
 using Bakehouse.Infra.Data.Repositories;
 using FluentResults;
@@ -15,16 +16,26 @@ using System.Windows.Forms;
 
 namespace Bakehouse.GUI.Views.Public
 {
-    public partial class ResetPasswordGenerateToken : Form
+    public partial class ResetPasswordTo : Form
     {
-        private string _usernameRes;
-        private string _emailRes;
+        private string _username;
+        private string _email;
 
-        public ResetPasswordGenerateToken()
+        public ResetPasswordTo()
         {
             InitializeComponent();
-            _usernameRes = "";
-            _emailRes = "";
+            _username = "";
+            _email = "";
+        }
+
+        public ResetPasswordTo(string email, string username)
+        {
+            InitializeComponent();
+
+            _username = username;
+            _email = email;
+
+            txtUsername.Text = _username;
         }
 
         private void lblBackToLogin_MouseEnter(object sender, EventArgs e)
@@ -60,32 +71,35 @@ namespace Bakehouse.GUI.Views.Public
             Application.Run(new Login());
         }
 
-        private void OpenWindowResetPasswordTo()
-        {
-            Application.Run(new ResetPasswordTo(_emailRes, _usernameRes));
-        }
-
-        private async void btnContinue_Click(object sender, EventArgs e)
+        private async void btnResetPassword_Click(object sender, EventArgs e)
         {
             try
             {
                 UserBBL userBBL = new UserBBL();
+                
+                string token = txtToken.Text;
+                string password = txtPassword.Text;
+                string rePassword = txtRePassword.Text;
 
-                string username = txtUsername.Text;
+                ResetPasswordUserVO userVO = new ResetPasswordUserVO
+                {
+                    Email = _email,
+                    Username = _username,
+                    Token = token,
+                    Password = password,
+                    RePassword = rePassword
+                };
 
-                Result result = await userBBL.ResetPasswordGenerateToken(username);
+                Result result = await userBBL.ResetPasswordTo(userVO);
 
                 if (result.IsSuccess)
                 {
-                    _usernameRes = result.Successes.FirstOrDefault().Message.Split(",")[0];
-                    _emailRes = result.Successes.FirstOrDefault().Message.Split(",")[1];
-
-                    MessageBoxCustom.Success("Enviado email para: " + _emailRes + ", contendo o token de recuperação de senha");
+                    MessageBoxCustom.Success("Senha redefinida com sucesso");
 
                     this.Close();
-                    Thread thread = new Thread(OpenWindowResetPasswordTo);
-                    thread.SetApartmentState(ApartmentState.STA);
-                    thread.Start();
+                    Thread t = new Thread(OpenWindowLogin);
+                    t.SetApartmentState(ApartmentState.STA);
+                    t.Start();
                 }
                 else
                 {
@@ -94,10 +108,24 @@ namespace Bakehouse.GUI.Views.Public
             }
             catch (Exception ex)
             {
-                await LogRepository.RegisterLog("Ocorreu um erro ao processar tela de recuperação de senha, gerar token",
+                await LogRepository.RegisterLog("Erro ao trocar senhas",
                                           ex.Message,
                                           this.GetType().ToString());
                 MessageBoxCustom.Error("Erro inesperado");
+            }
+        }
+
+        private void cbShowPass_CheckedChanged(object sender, EventArgs e)
+        {
+            if (cbShowPass.Checked)
+            {
+                txtPassword.UseSystemPasswordChar = false;
+                txtRePassword.UseSystemPasswordChar = false;
+            }
+            else
+            {
+                txtPassword.UseSystemPasswordChar = true;
+                txtRePassword.UseSystemPasswordChar = true;
             }
         }
     }
