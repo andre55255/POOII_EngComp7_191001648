@@ -17,18 +17,18 @@ namespace Bakehouse.App.ViewObjects.User
             if (Username == null || Username.Trim().Length <= 0)
                 errors.AppendLine("Nome do usuário deve ser informado.");
             if (Token == null || Token.Trim().Length <= 0)
-                errors.AppendLine("Token de redefinição de senha deve ser informado");
+                errors.AppendLine("\nToken de redefinição de senha deve ser informado");
             if (Email == null || Email.Trim().Length <= 0)
-                errors.AppendLine("Email do usuário deve ser informado.");
+                errors.AppendLine("\nEmail do usuário deve ser informado.");
             if (Password == null || Password.Trim().Length <= 0)
-                errors.AppendLine("Senha deve ser informada.");
+                errors.AppendLine("\nSenha deve ser informada.");
             if (RePassword == null || RePassword.Trim().Length <= 0)
-                errors.AppendLine("Confirmação de senha deve ser informada.");
+                errors.AppendLine("\nConfirmação de senha deve ser informada.");
             if (Password != RePassword)
-                errors.AppendLine("Senhas não conferem");
+                errors.AppendLine("\nSenhas não conferem");
 
             if (errors.Length > 0)
-                return Result.Fail(errors.ToString());
+                return Result.Fail(errors.ToString().Trim());
 
             return Result.Ok();
         }

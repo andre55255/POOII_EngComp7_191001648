@@ -107,7 +107,7 @@ namespace Bakehouse.GUI
 
         private void OpenWindowHome()
         {
-            Application.Run(new Home());
+            Application.Run(new Template());
         }
     }
 }

@@ -1,7 +1,7 @@
 ﻿
 namespace Bakehouse.GUI.Views.Private
 {
-    partial class Home
+    partial class Template
     {
         /// <summary>
         /// Required designer variable.
@@ -29,7 +29,7 @@ namespace Bakehouse.GUI.Views.Private
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Home));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Template));
             this.panelMenu = new System.Windows.Forms.Panel();
             this.btnLogout = new System.Windows.Forms.Button();
             this.btnUsers = new System.Windows.Forms.Button();
@@ -41,9 +41,12 @@ namespace Bakehouse.GUI.Views.Private
             this.lblRole = new System.Windows.Forms.Label();
             this.lblUsername = new System.Windows.Forms.Label();
             this.pictureBoxUser = new System.Windows.Forms.PictureBox();
+            this.panelMain = new System.Windows.Forms.Panel();
+            this.lblTitle = new System.Windows.Forms.Label();
             this.panelMenu.SuspendLayout();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUser)).BeginInit();
+            this.panelMain.SuspendLayout();
             this.SuspendLayout();
             // 
             // panelMenu
@@ -169,6 +172,7 @@ namespace Bakehouse.GUI.Views.Private
             this.btnHome.Text = "Home";
             this.btnHome.TextImageRelation = System.Windows.Forms.TextImageRelation.TextBeforeImage;
             this.btnHome.UseVisualStyleBackColor = true;
+            this.btnHome.Click += new System.EventHandler(this.btnHome_Click);
             this.btnHome.MouseEnter += new System.EventHandler(this.btnHome_MouseEnter);
             this.btnHome.MouseLeave += new System.EventHandler(this.btnHome_MouseLeave);
             // 
@@ -216,12 +220,32 @@ namespace Bakehouse.GUI.Views.Private
             this.pictureBoxUser.TabIndex = 0;
             this.pictureBoxUser.TabStop = false;
             // 
+            // panelMain
+            // 
+            this.panelMain.Controls.Add(this.lblTitle);
+            this.panelMain.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panelMain.Location = new System.Drawing.Point(186, 0);
+            this.panelMain.Name = "panelMain";
+            this.panelMain.Size = new System.Drawing.Size(772, 749);
+            this.panelMain.TabIndex = 1;
+            // 
+            // lblTitle
+            // 
+            this.lblTitle.AutoSize = true;
+            this.lblTitle.Font = new System.Drawing.Font("Segoe UI Semibold", 20.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.lblTitle.Location = new System.Drawing.Point(20, 17);
+            this.lblTitle.Name = "lblTitle";
+            this.lblTitle.Size = new System.Drawing.Size(70, 37);
+            this.lblTitle.TabIndex = 0;
+            this.lblTitle.Text = "Title";
+            // 
             // Home
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.WhiteSmoke;
             this.ClientSize = new System.Drawing.Size(958, 749);
+            this.Controls.Add(this.panelMain);
             this.Controls.Add(this.panelMenu);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(49)))), ((int)(((byte)(172)))), ((int)(((byte)(193)))));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
@@ -233,6 +257,8 @@ namespace Bakehouse.GUI.Views.Private
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxUser)).EndInit();
+            this.panelMain.ResumeLayout(false);
+            this.panelMain.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -250,5 +276,7 @@ namespace Bakehouse.GUI.Views.Private
         private System.Windows.Forms.Button btnWorksheet;
         private System.Windows.Forms.Button btnUsers;
         private System.Windows.Forms.Button btnLogout;
+        private System.Windows.Forms.Panel panelMain;
+        private System.Windows.Forms.Label lblTitle;
     }
 }

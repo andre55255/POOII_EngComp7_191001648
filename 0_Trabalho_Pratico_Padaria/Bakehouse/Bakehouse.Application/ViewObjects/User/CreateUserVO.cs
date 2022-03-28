@@ -15,7 +15,7 @@ namespace Bakehouse.App.ViewObjects.User
             if (Username.Trim().Length <= 0)
                 errors.Append("Username é obrigatório");
             if (Password.Trim().Length <= 0)
-                errors.AppendLine("Senha é obrigatória");
+                errors.AppendLine("\nSenha é obrigatória");
 
             if (errors.Length > 0)
                 return Result.Fail(errors.ToString());

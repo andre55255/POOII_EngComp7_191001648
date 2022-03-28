@@ -11,11 +11,11 @@ using System.Windows.Forms;
 
 namespace Bakehouse.GUI.Views.Private
 {
-    public partial class Home : Form
+    public partial class Template : Form
     {
         private UserApplicationSingleton _user;
 
-        public Home()
+        public Template()
         {
             InitializeComponent();
 
@@ -82,6 +82,17 @@ namespace Bakehouse.GUI.Views.Private
         private void btnLogout_MouseLeave(object sender, EventArgs e)
         {
             btnLogout.BackColor = Color.Firebrick;
+        }
+
+        private void btnHome_Click(object sender, EventArgs e)
+        {
+            /*
+            Login window = new Login();
+            window.TopLevel = false;
+            window.Visible = true;
+            window.FormBorderStyle = FormBorderStyle.None;
+            panelMain.Controls.Add(window);
+            */
         }
     }
 }
