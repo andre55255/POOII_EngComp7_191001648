@@ -12,12 +12,14 @@ namespace Bakehouse.App.BBLs
 {
     public class UserBBL
     {
-        private UserRepository _userRepo;
-        private EmailBBL _emailBBL;
+        private readonly UserRepository _userRepo;
+        private readonly RoleRepository _roleRepo;
+        private readonly EmailBBL _emailBBL;
 
         public UserBBL()
         {
             _userRepo = new UserRepository();
+            _roleRepo = new RoleRepository();
             _emailBBL = new EmailBBL();
         }
 
@@ -34,9 +36,15 @@ namespace Bakehouse.App.BBLs
 
                     Result result = await _userRepo.SignInAsync(user, userVO.Password);
                     if (result.IsSuccess)
+                    {
+                        Role role = await _roleRepo.FindByIdAsync(user.RoleId);
+
+                        UserApplicationSingleton.GetInstance(user.Id, user.Email, user.Username, 
+                                                             user.Contacts, role.Description);
+
                         return Result.Ok();
-                    else
-                        return Result.Fail(result.Errors.FirstOrDefault().Message);
+                    }
+                    return Result.Fail(result.Errors.FirstOrDefault().Message);
                 }
                 return Result.Fail(valid.Errors.FirstOrDefault().Message);
             }
@@ -49,7 +57,7 @@ namespace Bakehouse.App.BBLs
                 return Result.Fail(ConstantsMessagesUser.ErrorBBLSignIn + userVO.Username);
             }
         }
-    
+
         public async Task<Result> ResetPasswordGenerateToken(string username)
         {
             try
@@ -79,7 +87,7 @@ namespace Bakehouse.App.BBLs
                     if (isEmailSent.IsFailed)
                         return Result.Fail(isEmailSent.Errors.FirstOrDefault().Message);
 
-                    return Result.Ok().WithSuccess(user.Username+","+user.Email);
+                    return Result.Ok().WithSuccess(user.Username + "," + user.Email);
                 }
             }
             catch (Exception ex)
@@ -91,7 +99,7 @@ namespace Bakehouse.App.BBLs
                 return Result.Fail(ConstantsMessagesUser.ErrorBBLResetPasswordGenerateToken + username);
             }
         }
-    
+
         public async Task<Result> ResetPasswordTo(ResetPasswordUserVO userVO)
         {
             try
@@ -105,7 +113,7 @@ namespace Bakehouse.App.BBLs
 
                     if (user.TokenResetPassword != userVO.Token)
                         return Result.Fail(ConstantsMessagesUser.ErrorBBLResetPasswordTokenInvalid + user.Email);
-                    
+
                     Result result = await _userRepo.ResetPasswordToAsync(user, userVO.Password);
                     if (result.IsFailed)
                         return Result.Fail(result.Errors.FirstOrDefault().Message);

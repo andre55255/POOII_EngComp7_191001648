@@ -1,6 +1,7 @@
 ﻿using Bakehouse.App.BBLs;
 using Bakehouse.App.ViewObjects.User;
 using Bakehouse.GUI.Utils;
+using Bakehouse.GUI.Views.Private;
 using Bakehouse.GUI.Views.Public;
 using Bakehouse.Infra.Data.Repositories;
 using FluentResults;
@@ -59,8 +60,12 @@ namespace Bakehouse.GUI
                 Result result = await userBBL.SignInAsync(userVO);
                 if (result.IsSuccess)
                 {
-                    // Abre outra tela
                     MessageBoxCustom.Success("Login efetuado com sucesso");
+
+                    this.Close();
+                    Thread thread = new Thread(OpenWindowHome);
+                    thread.SetApartmentState(ApartmentState.STA);
+                    thread.Start();
                 }
                 else
                 {
@@ -98,6 +103,11 @@ namespace Bakehouse.GUI
         private void OpenWindowResetPasswordGenerateToken()
         {
             Application.Run(new ResetPasswordGenerateToken());
+        }
+
+        private void OpenWindowHome()
+        {
+            Application.Run(new Home());
         }
     }
 }
