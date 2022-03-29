@@ -67,6 +67,8 @@
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar as listas de roles no InfraData";
         public static string ErrorInfraDataInsert = "Ocorreu um erro ao inserir uma role no InfraData";
         public static string ErrorInfraDataUpdate = "Ocorreu um erro ao atualizar uma role no InfraData";
+
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar as roles do banco de dados.";
     }
 
     public static class ConstantsMessagesUnitOfMeasurement
@@ -97,10 +99,12 @@
         public static string ErrorInfraDataSignInPasswordIncorrect = "Senha incorreta, tentativas: ";
         public static string ErrorInfraDataLockoutEnded = "Você excedeu o número de tentativas para redefinir senha, redefina a senha para logar";
         public static string ErrorBBLSignIn = "Ocorreu um erro ao logar usuário: ";
+        public static string ErrorBBLCreateUser = "Ocorreu um erro ao criar o usuário: ";
         public static string ErrorBBLResetPasswordGenerateToken = "Ocorreu um erro ao gerar token de recuperação de senha, Username: ";
         public static string ErrorBBLResetPasswordTo = "Ocorreu um erro ao trocar a senha deste usuário, Username: ";
         public static string ErrorBBLResetPasswordTokenInvalid = "Token diferente do enviado para email: ";
         public static string ErrorBBLUserNotFound = "Usuário não encontrado no banco";
+        public static string ErrorBBLFindAllUsers = "Ocorreu um erro ao buscar os usuários no banco";
     }
 
     public static class ConstantsMessagesEmail

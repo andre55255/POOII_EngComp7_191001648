@@ -79,7 +79,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<User>> FindAllAsync()
+        public async Task<List<User>> FindAllAsync()
         {
             try
             {

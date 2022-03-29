@@ -5,6 +5,7 @@ using Bakehouse.Helpers;
 using Bakehouse.Infra.Data.Repositories;
 using FluentResults;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Bakehouse.App.BBLs
             _emailBBL = new EmailBBL();
         }
 
-        public async Task<Result> SignInAsync(CreateUserVO userVO)
+        public async Task<Result> SignInAsync(SignInUserVO userVO)
         {
             try
             {
@@ -132,6 +133,81 @@ namespace Bakehouse.App.BBLs
                                           this.GetType().ToString());
 
                 return Result.Fail(ConstantsMessagesUser.ErrorBBLResetPasswordTo + userVO.Username);
+            }
+        }
+    
+        public async Task<List<UserVO>> FindAllUsers()
+        {
+            try
+            {
+                List<UserVO> usersVO = new List<UserVO>();
+                List<User> users = await _userRepo.FindAllAsync();
+
+                foreach (User user in users)
+                {
+                    Role role = await _roleRepo.FindByIdAsync(user.RoleId);
+
+                    UserVO aux = new UserVO
+                    {
+                        Id = user.Id,
+                        Email = user.Email,
+                        Username = user.Username,
+                        Role = (role == null) ? "Sem perfil" : role.Description,
+                        CreatedAt = user.CreatedAt,
+                        DisabledAt = user.DisabledAt
+                    };
+
+                    usersVO.Add(aux);
+                }
+
+                return usersVO;
+            }
+            catch (Exception ex)
+            {
+                await LogRepository.RegisterLog(ConstantsMessagesUser.ErrorBBLFindAllUsers,
+                                          ex.Message,
+                                          this.GetType().ToString());
+
+                return null;
+            }
+        }
+    
+        public async Task<Result> CreateUser(CreateUserVO userVO)
+        {
+            try
+            {
+                Result valid = userVO.Valid();
+                if (valid.IsFailed)
+                    return Result.Fail(valid.Errors.FirstOrDefault().Message);
+
+                User user = new User
+                {
+                    Username = userVO.Username,
+                    Email = userVO.Email,
+                    HashPassword = StaticMethods.CryptPassword(userVO.Password),
+                    Contacts = userVO.Contacts ?? "",
+                    CreatedAt = DateTime.Now,
+                    UpdatedAt = DateTime.Now,
+                    DisabledAt = null,
+                    LockoutEnd = 0,
+                    Status = false,
+                    TokenResetPassword = null,
+                    RoleId = userVO.RoleId
+                };
+
+                Result result = await _userRepo.InsertAsync(user);
+                if (result.IsSuccess)
+                    return Result.Ok().WithSuccess(result.Successes.FirstOrDefault().Message);
+
+                return Result.Fail(result.Errors.FirstOrDefault().Message);
+            }
+            catch (Exception ex)
+            {
+                await LogRepository.RegisterLog(ConstantsMessagesUser.ErrorBBLCreateUser + userVO.Username,
+                                          ex.Message,
+                                          this.GetType().ToString());
+
+                return Result.Fail(ConstantsMessagesUser.ErrorBBLCreateUser + userVO.Username);
             }
         }
     }

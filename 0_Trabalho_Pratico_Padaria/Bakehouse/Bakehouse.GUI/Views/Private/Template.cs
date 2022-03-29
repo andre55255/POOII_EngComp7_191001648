@@ -1,4 +1,5 @@
-﻿using Bakehouse.Helpers;
+﻿using Bakehouse.GUI.Utils;
+using Bakehouse.Helpers;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -93,6 +94,22 @@ namespace Bakehouse.GUI.Views.Private
             window.FormBorderStyle = FormBorderStyle.None;
             panelMain.Controls.Add(window);
             */
+        }
+
+        private void btnUsers_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                UsersView usersView = new UsersView();
+                usersView.TopLevel = false;
+                usersView.Visible = true;
+                panelMain.Controls.Clear();
+                panelMain.Controls.Add(usersView);
+            }
+            catch (Exception)
+            {
+                MessageBoxCustom.Error("Erro ao carregar tela de usuários");
+            }
         }
     }
 }

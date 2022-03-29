@@ -51,7 +51,7 @@ namespace Bakehouse.GUI
 
                 string username = txtUsername.Text;
                 string password = txtPassword.Text;
-                CreateUserVO userVO = new CreateUserVO
+                SignInUserVO userVO = new SignInUserVO
                 {
                     Username = username,
                     Password = password,

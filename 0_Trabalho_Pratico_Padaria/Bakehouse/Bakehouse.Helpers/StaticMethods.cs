@@ -34,5 +34,30 @@ namespace Bakehouse.Helpers
 
             return sb.ToString() == passwordSave;
         }
+
+        public static bool EmailValid(string email)
+        {
+            string username = email.Split("@")[0];
+            string domain = email.Split("@")[1];
+
+            if (string.IsNullOrEmpty(username))
+                return false;
+            if (string.IsNullOrEmpty(domain))
+                return false;
+            if (!domain.Contains("com"))
+                return false;
+
+            return true;
+        }
+
+        public static bool ValidPassword(string password)
+        {
+            if (password.Length <= 6)
+                return false;
+            if (password.Length > 10)
+                return false;
+
+            return true;
+        }
     }
 }
