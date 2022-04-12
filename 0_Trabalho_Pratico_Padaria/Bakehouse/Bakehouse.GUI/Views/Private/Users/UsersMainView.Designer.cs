@@ -1,6 +1,6 @@
 ﻿namespace Bakehouse.GUI.Views.Private
 {
-    partial class UsersView
+    partial class UsersMainView
     {
         /// <summary>
         /// Required designer variable.

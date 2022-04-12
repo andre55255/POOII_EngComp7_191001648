@@ -35,7 +35,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<UnitOfMeasurement>> FindAllAsync()
+        public async Task<List<UnitOfMeasurement>> FindAllAsync()
         {
             try
             {

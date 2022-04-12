@@ -210,5 +210,25 @@ namespace Bakehouse.App.BBLs
                 return Result.Fail(ConstantsMessagesUser.ErrorBBLCreateUser + userVO.Username);
             }
         }
+    
+        public async Task<Result> DeleteUser(int id)
+        {
+            try
+            {
+                Result result = await _userRepo.DeleteAsync(id);
+                if (result.IsSuccess)
+                    return Result.Ok();
+
+                return Result.Fail(result.Errors.FirstOrDefault().Message);
+            }
+            catch (Exception ex)
+            {
+                await LogRepository.RegisterLog(ConstantsMessagesUser.ErrorBBLDelete + id,
+                                         ex.Message,
+                                         this.GetType().ToString());
+
+                return Result.Fail(ConstantsMessagesUser.ErrorBBLDelete + id);
+            }
+        }
     }
 }

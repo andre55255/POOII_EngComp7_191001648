@@ -35,7 +35,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<Category>> FindAllAsync()
+        public async Task<List<Category>> FindAllAsync()
         {
             try
             {

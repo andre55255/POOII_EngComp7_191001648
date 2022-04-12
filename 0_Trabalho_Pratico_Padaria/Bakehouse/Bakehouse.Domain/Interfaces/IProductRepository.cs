@@ -9,7 +9,7 @@ namespace Bakehouse.Domain.Interfaces
     {
         public Task<Result> InsertAsync(Product product);
         public Task<Product> FindByIdAsync(int id);
-        public Task<IEnumerable<Product>> FindAllAsync();
+        public Task<List<Product>> FindAllAsync();
         public Task<Result> DeleteAsync(int id);
         public Task<Result> UpdateAsync(int id, Product product);
     }

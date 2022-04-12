@@ -9,7 +9,7 @@ namespace Bakehouse.Domain.Interfaces
     {
         public Task<Result> InsertAsync(UnitOfMeasurement unitOfMeasurement);
         public Task<UnitOfMeasurement> FindByIdAsync(int id);
-        public Task<IEnumerable<UnitOfMeasurement>> FindAllAsync();
+        public Task<List<UnitOfMeasurement>> FindAllAsync();
         public Task<Result> DeleteAsync(int id);
         public Task<Result> UpdateAsync(int id, UnitOfMeasurement unitOfMeasurement);
     }

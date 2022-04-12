@@ -17,6 +17,13 @@
         public static string ErrorInfraDataFindAllCategory = "Ocorreu um erro ao buscar a lista de categorias no InfraData";
         public static string ErrorInfraDataInsertCategory = "Ocorreu um erro ao inserir uma categoria no InfraData";
         public static string ErrorInfraDataUpdateCategory = "Ocorreu um erro ao atualizar uma categoria no InfraData";
+
+        // BBL
+        public static string ErrorBBLCreateCategory = "Ocorreu um erro ao criar a categoria: ";
+        public static string ErrorBBLFindAllCategory = "Ocorreu um erro ao buscar a lista de categorias no banco.";
+        public static string ErrorBBLFindByIdCategory = "Ocorreu um erro ao buscar a categoria com id: .";
+        public static string ErrorBBLDeleteCategory = "Ocorreu um erro ao deletar a categoria com id: .";
+        public static string ErrorBBLUpdateCategory = "Ocorreu um erro ao atualizar a categoria com id: .";
     }
 
     public static class ConstantsMessagesMovement
@@ -57,6 +64,13 @@
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar a lista de produtos no InfraData";
         public static string ErrorInfraDataInsert = "Ocorreu um erro ao inserir um produto no InfraData";
         public static string ErrorInfraDataUpdate = "Ocorreu um erro ao atualizar um produto no InfraData";
+
+        // BBL
+        public static string ErrorBBLCreate = "Ocorreu um erro ao criar o produto: ";
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar a lista de produtos no banco.";
+        public static string ErrorBBLFindById = "Ocorreu um erro ao buscar o produto com id: .";
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar o produto com id: .";
+        public static string ErrorBBLUpdate = "Ocorreu um erro ao atualizar o produto com id: .";
     }
 
     public static class ConstantsMessagesRole
@@ -79,6 +93,13 @@
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar as listas de unidades de medidas no InfraData";
         public static string ErrorInfraDataInsert = "Ocorreu um erro ao inserir uma unidade de medida no InfraData";
         public static string ErrorInfraDataUpdate = "Ocorreu um erro ao atualizar uma unidade de medida no InfraData";
+
+        // BBL
+        public static string ErrorBBLCreate = "Ocorreu um erro ao criar a unidade de medida: ";
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar a lista de unidades de medida no banco.";
+        public static string ErrorBBLFindById = "Ocorreu um erro ao buscar a unidade de medida com id: .";
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar a unidade de medida com id: .";
+        public static string ErrorBBLUpdate = "Ocorreu um erro ao atualizar a unidade de medida com id: .";
     }
 
     public static class ConstantsMessagesUser
@@ -105,6 +126,7 @@
         public static string ErrorBBLResetPasswordTokenInvalid = "Token diferente do enviado para email: ";
         public static string ErrorBBLUserNotFound = "Usuário não encontrado no banco";
         public static string ErrorBBLFindAllUsers = "Ocorreu um erro ao buscar os usuários no banco";
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar usuario, id: ";
     }
 
     public static class ConstantsMessagesEmail

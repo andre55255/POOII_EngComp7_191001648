@@ -100,7 +100,7 @@ namespace Bakehouse.GUI.Views.Private
         {
             try
             {
-                UsersView usersView = new UsersView();
+                UsersMainView usersView = new UsersMainView();
                 usersView.TopLevel = false;
                 usersView.Visible = true;
                 panelMain.Controls.Clear();

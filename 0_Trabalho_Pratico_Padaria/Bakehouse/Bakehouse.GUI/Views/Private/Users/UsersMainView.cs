@@ -10,11 +10,11 @@ using System.Windows.Forms;
 
 namespace Bakehouse.GUI.Views.Private
 {
-    public partial class UsersView : Form
+    public partial class UsersMainView : Form
     {
         private UserBBL _userBBL;
 
-        public UsersView()
+        public UsersMainView()
         {
             _userBBL = new UserBBL();
 
