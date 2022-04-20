@@ -34,6 +34,13 @@
         public static string ErrorInfraDataFindAllMovement = "Ocorreu um erro ao buscar a lista de movimentos no InfraData";
         public static string ErrorInfraDataInsertMovement = "Ocorreu um erro ao inserir um movimento no InfraData";
         public static string ErrorInfraDataUpdateMovement = "Ocorreu um erro ao atualizar um movimento no InfraData";
+
+        // BBL
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar o movimento no BBL";
+        public static string ErrorBBLFindById = "Ocorreu um erro ao buscar o movimento por id no BBL";
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar a lista de movimentos no BBL";
+        public static string ErrorBBLCreate = "Ocorreu um erro ao inserir um movimento no BBL";
+        public static string ErrorBBLUpdate = "Ocorreu um erro ao atualizar um movimento no BBL";
     }
 
     public static class ConstantsMessagesOrderPadItem
@@ -44,6 +51,13 @@
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar a lista de itens de pedidos no InfraData";
         public static string ErrorInfraDataInsert = "Ocorreu um erro ao inserir um item de pedidos no InfraData";
         public static string ErrorInfraDataUpdate = "Ocorreu um erro ao atualizar um item de pedido no InfraData";
+
+        // BBL
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar o item de pedido no BBL";
+        public static string ErrorBBLFindById = "Ocorreu um erro ao buscar o item de pedido por id no BBL";
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar a lista de itens de pedidos no BBL";
+        public static string ErrorBBLCreate = "Ocorreu um erro ao inserir um item de pedido no BBL";
+        public static string ErrorBBLUpdate = "Ocorreu um erro ao atualizar um item de pedido no BBL";
     }
 
     public static class ConstantsMessagesOrderPad
@@ -54,6 +68,13 @@
         public static string ErrorInfraDataFindAll = "Ocorreu um erro ao buscar a lista de pedidos no InfraData";
         public static string ErrorInfraDataInsert = "Ocorreu um erro ao inserir um pedidos no InfraData";
         public static string ErrorInfraDataUpdate = "Ocorreu um erro ao atualizar um pedido no InfraData";
+
+        // BBL
+        public static string ErrorBBLDelete = "Ocorreu um erro ao deletar a comanda na BBL";
+        public static string ErrorBBLFindById = "Ocorreu um erro ao buscar a comanda no BBL";
+        public static string ErrorBBLFindAll = "Ocorreu um erro ao buscar a lista de comandas no BBL";
+        public static string ErrorBBLCreate = "Ocorreu um erro ao inserir uma comanda no BBL";
+        public static string ErrorBBLUpdate = "Ocorreu um erro ao atualizar uma comanda no BBL";
     }
 
     public static class ConstantsMessagesProduct

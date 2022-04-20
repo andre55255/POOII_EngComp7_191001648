@@ -9,7 +9,7 @@ namespace Bakehouse.Domain.Interfaces
     {
         public Task<Result> InsertAsync(Movement movement);
         public Task<Movement> FindByIdAsync(int id);
-        public Task<IEnumerable<Movement>> FindAllAsync();
+        public Task<List<Movement>> FindAllAsync();
         public Task<Result> DeleteAsync(int id);
         public Task<Result> UpdateAsync(int id, Movement movement);
     }

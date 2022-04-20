@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Bakehouse.Infra.Data.Repositories
 {
-    public class OrderRepository : BaseRepository
+    public class OrderRepository : BaseRepository, IOrderPadRepository
     {
         public async Task<Result> DeleteAsync(int id)
         {
@@ -35,7 +35,7 @@ namespace Bakehouse.Infra.Data.Repositories
             }
         }
 
-        public async Task<IEnumerable<OrderPad>> FindAllAsync()
+        public async Task<List<OrderPad>> FindAllAsync()
         {
             try
             {
