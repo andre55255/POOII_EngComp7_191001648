@@ -9,14 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Category")
+@Table(name = "TB_Categoria")
 public class Category implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDCategoria")
     private int id;
     
-    @Column(nullable = false)
+    @Column(name = "Descricao", nullable = false, length = 50)
     private String description;
+    
+    public Category() {
+    }
+
+    public Category(int id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public int getId() {
         return id;
@@ -33,6 +42,4 @@ public class Category implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
 }

@@ -9,14 +9,23 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "Category")
-public class Category implements Serializable {
+@Table(name = "TB_UnidadeMedida")
+public class UnitOfMeasurement implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "IDUnidadeMedida")
     private int id;
     
-    @Column(nullable = false)
+    @Column(name = "Descricao", nullable = false, length = 20)
     private String description;
+    
+    public UnitOfMeasurement() {
+    }
+
+    public UnitOfMeasurement(int id, String description) {
+        this.id = id;
+        this.description = description;
+    }
 
     public int getId() {
         return id;
@@ -33,6 +42,4 @@ public class Category implements Serializable {
     public void setDescription(String description) {
         this.description = description;
     }
-    
-    
 }

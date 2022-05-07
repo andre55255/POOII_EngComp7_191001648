@@ -1,0 +1,8 @@
+com\bakehouse\domain\UnitOfMeasurement.class
+com\bakehouse\domain\Product.class
+com\bakehouse\domain\Category.class
+com\bakehouse\helpers\Result.class
+com\bakehouse\helpers\ConstantsStatic.class
+com\bakehouse\main\Main.class
+com\bakehouse\dao\CategoryImpl.class
+com\bakehouse\dao\ICategoryDAO.class
