@@ -2,13 +2,16 @@
   <persistence-unit name="bakehouse">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>com.bakehouse.domain.Category</class>
-    <class>com.bakehouse.domain.UnitOfMeasurement</class>
+    <class>com.bakehouse.domain.OrderPad</class>
+    <class>com.bakehouse.domain.OrderPadItem</class>
     <class>com.bakehouse.domain.Product</class>
+    <class>com.bakehouse.domain.UnitOfMeasurement</class>
+    <class>com.bakehouse.domain.User</class>
     <properties>
       <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL8Dialect"/>
       <property name="hibernate.show_sql" value="true"/>
       <property name="hibernate.format_sql" value="true"/>
-      <property name="hibernate.hbm2ddl.auto" value="update"/>
+      <property name="hibernate.hbm2ddl.auto" value="none"/>
       <property name="javax.persistence.jdbc.url" value="jdbc:mysql://mysql746.umbler.com:41890/padaria_poo?zeroDateTimeBehavior=convertToNull"/>
       <property name="javax.persistence.jdbc.user" value="pooii2022"/>
       <property name="javax.persistence.jdbc.driver" value="com.mysql.jdbc.Driver"/>

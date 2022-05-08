@@ -1,12 +1,16 @@
 package com.bakehouse.domain;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
@@ -17,45 +21,43 @@ public class Product implements Serializable {
     @Column(name = "IDProduto")
     private int id;
     
-    @Column(name = "Descricao")
+    @Column(name = "Descricao", length = 30, nullable = false)
     private String description;
     
-    @Column(name = "CodigoDeBarras")
+    @Column(name = "CodigoDeBarras", length = 15, nullable = false)
     private String barCode;
     
-    @Column(name = "Quantidade")
+    @Column(name = "Quantidade", precision = 2, scale = 10, nullable = false)
     private double quantity;
     
-    @Column(name = "QuantidadeMinima")
+    @Column(name = "QuantidadeMinima", precision = 2, scale = 10, nullable = false)
     private double minQuantity;
     
-    @Column(name = "ValorUnitario")
+    @Column(name = "ValorUnitario", precision = 2, scale = 10, nullable = false)
     private double valueUnitary;
 
     @ManyToOne
+    @JoinColumn(name = "IDUnidadeMedida", nullable = false)
     private UnitOfMeasurement unitOfMeasurement;
     
-    @Column(name = "IDUnidadeMedida")
-    private int idUnitOfMeasurement;
-    
     @ManyToOne
+    @JoinColumn(name = "IDCategoria", nullable = false)
     private Category category;
     
-    @Column(name = "IDCategoria")
-    private int idCategory;
-
+    @OneToMany(mappedBy = "product")
+    private List<OrderPadItem> items = new ArrayList<>();
+    
     public Product() {
     }
 
-    public Product(int id, String description, String barCode, double quantity, double minQuantity, double valueUnitary, int idUnitOfMeasurement, int idCategory) {
+    public Product(int id, String description, String barCode, double quantity, double minQuantity, double valueUnitary, List<OrderPadItem> items) {
         this.id = id;
         this.description = description;
         this.barCode = barCode;
         this.quantity = quantity;
         this.minQuantity = minQuantity;
         this.valueUnitary = valueUnitary;
-        this.idUnitOfMeasurement = idUnitOfMeasurement;
-        this.idCategory = idCategory;
+        this.items = items;
     }
 
     public int getId() {
@@ -106,22 +108,6 @@ public class Product implements Serializable {
         this.valueUnitary = valueUnitary;
     }
 
-    public int getIdUnitOfMeasurement() {
-        return idUnitOfMeasurement;
-    }
-
-    public void setIdUnitOfMeasurement(int idUnitOfMeasurement) {
-        this.idUnitOfMeasurement = idUnitOfMeasurement;
-    }
-
-    public int getIdCategory() {
-        return idCategory;
-    }
-
-    public void setIdCategory(int idCategory) {
-        this.idCategory = idCategory;
-    }
-
     public UnitOfMeasurement getUnitOfMeasurement() {
         return unitOfMeasurement;
     }
@@ -136,5 +122,13 @@ public class Product implements Serializable {
 
     public void setCategory(Category category) {
         this.category = category;
+    }
+
+    public List<OrderPadItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderPadItem> items) {
+        this.items = items;
     }
 }

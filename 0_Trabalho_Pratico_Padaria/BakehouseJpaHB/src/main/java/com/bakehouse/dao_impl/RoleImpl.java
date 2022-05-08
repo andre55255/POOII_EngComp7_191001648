@@ -1,6 +1,7 @@
-package com.bakehouse.dao;
+package com.bakehouse.dao_impl;
 
-import com.bakehouse.domain.Category;
+import com.bakehouse.dao_interfaces.IRoleDAO;
+import com.bakehouse.domain.Role;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
 import java.util.List;
@@ -9,22 +10,21 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class CategoryImpl implements ICategoryDAO {
+public class RoleImpl implements IRoleDAO {
 
     @Override
-    public Result Insert(Category category) {
+    public Result insert(Role role) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
             em.getTransaction().begin();
-            em.persist(category);
+            em.persist(role);
             em.getTransaction().commit();
-
-            return new Result("Categoria inserida com sucesso", true);
+            
+            return new Result("Perfil inserido com sucesso no banco", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Falha ao deletar categoria", false);
+            return new Result("Falha ao persistir perfil no banco", false);
         } finally {
             emf.close();
             em.close();
@@ -32,19 +32,18 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public Result Update(Category category) {
+    public Result update(Role role) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
             em.getTransaction().begin();
-            em.merge(category);
+            em.merge(role);
             em.getTransaction().commit();
-
-            return new Result("Categoria editada com sucesso", true);
+            
+            return new Result("Perfil editado com sucesso no banco", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Erro ao editar categoria no banco de dados", false);
+            return new Result("Falha ao editar perfil no banco", false);
         } finally {
             emf.close();
             em.close();
@@ -52,15 +51,35 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public List<Category> FindAll() {
+    public Result delete(int id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Query query = em.createQuery("from Category");
-            List<Category> categories = query.getResultList();
+            Role role = findById(id);
+            if (role == null)
+                return new Result("Role não encotnrada", false);
+            
+            em.getTransaction().begin();
+            em.remove(role);
+            em.getTransaction().commit();
+            
+            return new Result("Perfil deletado com sucesso", true);
+        } catch (Exception ex) {
+            em.getTransaction().rollback();
+            return new Result("Falha ao deletar perfil no banco de dados", false);
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
 
-            return categories;
+    @Override
+    public Role findById(int id) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Role role = em.find(Role.class, id);
+            return role;
         } catch (Exception ex) {
             return null;
         } finally {
@@ -70,14 +89,12 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public Category FindById(int id) {
+    public List<Role> findAll() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Category save = em.find(Category.class, id);
-
-            return save;
+            Query query = em.createQuery("from Role r order by r.description asc");
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         } finally {
@@ -87,42 +104,15 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public List<Category> FindByDescription(String description) {
+    public List<Role> findByDescription(String description) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Query query = em.createQuery("from Category cat where cat.description like :desc");
+            Query query = em.createQuery("from Role rol where rol.description like :desc order by r.description asc");
             query.setParameter("desc", "%"+description+"%");
-            List<Category> listSave = query.getResultList();
-
-            return listSave;
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
-        } finally {
-            emf.close();
-            em.close();
-        }
-    }
-
-    @Override
-    public Result Delete(int id) {
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
-        EntityManager em = emf.createEntityManager();
-        
-        try {
-            Category save = em.find(Category.class, id);
-            if (save == null)
-                return new Result("Categoria não encontrada para deletar", false);
-            
-            em.getTransaction().begin();
-            em.remove(save);
-            em.getTransaction().commit();
-            
-            return new Result("Categoria deletada com sucesso", true);
-        } catch (Exception ex) {
-            em.getTransaction().rollback();
-            return new Result("Falha ao deletar categoria", false);
         } finally {
             emf.close();
             em.close();

@@ -8,30 +8,30 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "TB_UnidadeMedida")
-public class UnitOfMeasurement implements Serializable {
+@Table(name = "TB_Perfil")
+public class Role implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "IDUnidadeMedida")
+    @Column(name = "IDPerfil")
     private int id;
     
-    @Column(name = "Descricao", nullable = false, length = 20)
+    @Column(name = "Descricao", length = 50, nullable = false)
     private String description;
     
-    @OneToMany(mappedBy = "unitOfMeasurement")
-    private List<Product> products = new ArrayList<>();
-    
-    public UnitOfMeasurement() {
+    @OneToMany(mappedBy = "role")
+    private List<User> users = new ArrayList<>();
+
+    public Role() {
     }
 
-    public UnitOfMeasurement(int id, String description) {
+    public Role(int id, String description, List<User> users) {
         this.id = id;
         this.description = description;
+        this.users = users;
     }
 
     public int getId() {
@@ -50,11 +50,11 @@ public class UnitOfMeasurement implements Serializable {
         this.description = description;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public List<User> getUsers() {
+        return users;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
+    public void setUsers(List<User> users) {
+        this.users = users;
     }
 }
