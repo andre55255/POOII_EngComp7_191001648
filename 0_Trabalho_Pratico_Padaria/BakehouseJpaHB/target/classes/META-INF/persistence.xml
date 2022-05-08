@@ -2,9 +2,11 @@
   <persistence-unit name="bakehouse">
     <provider>org.hibernate.ejb.HibernatePersistence</provider>
     <class>com.bakehouse.domain.Category</class>
+    <class>com.bakehouse.domain.Movement</class>
     <class>com.bakehouse.domain.OrderPad</class>
     <class>com.bakehouse.domain.OrderPadItem</class>
     <class>com.bakehouse.domain.Product</class>
+    <class>com.bakehouse.domain.Role</class>
     <class>com.bakehouse.domain.UnitOfMeasurement</class>
     <class>com.bakehouse.domain.User</class>
     <properties>

@@ -19,7 +19,7 @@ public class Role implements Serializable {
     @Column(name = "IDPerfil")
     private int id;
     
-    @Column(name = "Descricao", length = 50, nullable = false)
+    @Column(name = "Descricao", length = 50, nullable = false, unique = true)
     private String description;
     
     @OneToMany(mappedBy = "role")
