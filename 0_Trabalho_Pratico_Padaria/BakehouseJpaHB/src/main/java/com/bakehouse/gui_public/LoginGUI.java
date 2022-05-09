@@ -1,4 +1,12 @@
-package com.bakehouse.gui;
+package com.bakehouse.gui_public;
+
+import com.bakehouse.gui_public.LoadingGUI;
+import com.bakehouse.helpers.EmitAlert;
+import com.bakehouse.helpers.Result;
+import com.bakehouse.services.impl.AccountService;
+import com.bakehouse.services.interfaces.IAccountService;
+import com.bakehouse.viewobjects.LoginVO;
+import java.awt.Component;
 
 public class LoginGUI extends javax.swing.JFrame {
 
@@ -103,11 +111,16 @@ public class LoginGUI extends javax.swing.JFrame {
         jButtonSignUp.setAlignmentX(0.5F);
         jButtonSignUp.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         jButtonSignUp.setBorderPainted(false);
-        jButtonSignUp.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        jButtonSignUp.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
         jButtonSignUp.setFocusable(false);
         jButtonSignUp.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
         jButtonSignUp.setMargin(new java.awt.Insets(8, 20, 8, 20));
         jButtonSignUp.setName(""); // NOI18N
+        jButtonSignUp.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonSignUpActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -184,12 +197,53 @@ public class LoginGUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void jcbShowPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jcbShowPasswordActionPerformed
-        if(jcbShowPassword.isSelected()) {
-            jtfPassword.setEchoChar((char)0);
-        } else {
+        if (jcbShowPassword.isSelected())
+        {
+            jtfPassword.setEchoChar((char) 0);
+        } else
+        {
             jtfPassword.setEchoChar('*');
         }
     }//GEN-LAST:event_jcbShowPasswordActionPerformed
+
+    private void jButtonSignUpActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonSignUpActionPerformed
+        try
+        {
+            Component compThis = this;
+
+            LoginVO userVO = new LoginVO();
+            userVO.setLogin(jtfLogin.getText());
+            userVO.setPassword(String.valueOf(jtfPassword.getPassword()));
+
+            final LoadingGUI loadingGui = new LoadingGUI();
+            loadingGui.setVisible(true);
+
+            IAccountService accService = new AccountService();
+
+            Thread t = new Thread() {
+
+                @Override
+                public void run() {
+                    Result result = accService.login(userVO);
+
+                    if (!result.isSuccess())
+                    {
+                        loadingGui.dispose();
+                        new EmitAlert(compThis, result.getMessage()).warning();
+                        return;
+                    }
+
+                    loadingGui.dispose();
+                    new EmitAlert(compThis, "Login efetuado com sucesso").success();
+                }
+            };
+
+            t.start();
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Ocorreu um erro inesperado").error();
+        }
+    }//GEN-LAST:event_jButtonSignUpActionPerformed
 
     public static void main(String args[]) {
         /* Set the Nimbus look and feel */

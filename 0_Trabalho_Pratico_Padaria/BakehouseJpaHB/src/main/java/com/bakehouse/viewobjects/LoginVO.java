@@ -33,9 +33,9 @@ public class LoginVO {
     
     public Result valid() {
         try {
-            if (!Validations.stringIsNullOrEmpty(login))
+            if (Validations.stringIsNullOrEmpty(login))
                 return new Result("Login não informado", false);
-            if (!Validations.stringIsNullOrEmpty(password))
+            if (Validations.stringIsNullOrEmpty(password))
                 return new Result("Senha não informada", false);
             
             return new Result("OK", true);

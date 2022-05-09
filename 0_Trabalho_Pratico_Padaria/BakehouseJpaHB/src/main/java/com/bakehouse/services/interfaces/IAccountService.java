@@ -1,4 +1,4 @@
-package com.bakehouse.services_interfaces;
+package com.bakehouse.services.interfaces;
 
 import com.bakehouse.helpers.Result;
 import com.bakehouse.viewobjects.CreateEditUserVO;

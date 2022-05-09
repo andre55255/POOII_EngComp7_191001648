@@ -1,4 +1,4 @@
-package com.bakehouse.dao_interfaces;
+package com.bakehouse.dao.interfaces;
 
 import com.bakehouse.domain.UnitOfMeasurement;
 import com.bakehouse.helpers.Result;

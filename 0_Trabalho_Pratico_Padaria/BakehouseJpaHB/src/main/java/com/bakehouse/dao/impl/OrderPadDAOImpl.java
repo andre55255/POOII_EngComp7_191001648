@@ -1,6 +1,6 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.IOrderPadDAO;
+import com.bakehouse.dao.interfaces.IOrderPadDAO;
 import com.bakehouse.domain.OrderPad;
 import com.bakehouse.domain.OrderPadItem;
 import com.bakehouse.helpers.ConstantsStatic;
@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class OrderPadImpl implements IOrderPadDAO {
+public class OrderPadDAOImpl implements IOrderPadDAO {
 
     @Override
     public Result insert(OrderPad orderPad) {

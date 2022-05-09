@@ -1,4 +1,4 @@
-package com.bakehouse.dao_interfaces;
+package com.bakehouse.dao.interfaces;
 
 import com.bakehouse.domain.Category;
 import com.bakehouse.domain.Product;

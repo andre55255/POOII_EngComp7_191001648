@@ -1,7 +1,9 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.ICategoryDAO;
+import com.bakehouse.dao.interfaces.IProductDAO;
 import com.bakehouse.domain.Category;
+import com.bakehouse.domain.Product;
+import com.bakehouse.domain.UnitOfMeasurement;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
 import java.util.List;
@@ -10,22 +12,23 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class CategoryImpl implements ICategoryDAO {
+public class ProductDAOImpl implements IProductDAO {
 
     @Override
-    public Result insert(Category category) {
+    public Result insert(Product product) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
             em.getTransaction().begin();
-            em.persist(category);
+            
+            em.persist(product);
+            
             em.getTransaction().commit();
-
-            return new Result("Categoria inserida com sucesso", true);
+            
+            return new Result("Produto inserido com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Falha ao deletar categoria", false);
+            return new Result("Falha ao inserir produto no banco", false);
         } finally {
             emf.close();
             em.close();
@@ -33,19 +36,20 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public Result update(Category category) {
+    public Result update(Product product) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
             em.getTransaction().begin();
-            em.merge(category);
+            
+            em.merge(product);
+            
             em.getTransaction().commit();
-
-            return new Result("Categoria editada com sucesso", true);
+            
+            return new Result("Produto editado com sucesso no banco", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Erro ao editar categoria no banco de dados", false);
+            return new Result("Falha ao editar produto no banco", false);
         } finally {
             emf.close();
             em.close();
@@ -53,15 +57,12 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public List<Category> findAll() {
+    public List<Product> findAll() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Query query = em.createQuery("from Category c order by c.description asc");
-            List<Category> categories = query.getResultList();
-
-            return categories;
+            Query query = em.createQuery("from Product p order by p.description asc");
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         } finally {
@@ -71,13 +72,11 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public Category findById(int id) {
+    public Product findById(int id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Category save = em.find(Category.class, id);
-
+            Product save = em.find(Product.class, id);
             return save;
         } catch (Exception ex) {
             return null;
@@ -88,16 +87,13 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
-    public List<Category> findByDescription(String description) {
+    public List<Product> findByDescription(String description) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-
         try {
-            Query query = em.createQuery("from Category cat where cat.description like :desc order by cat.description asc");
+            Query query = em.createQuery("from Product prod where prod.description like :desc order by prod.description asc");
             query.setParameter("desc", "%"+description+"%");
-            List<Category> listSave = query.getResultList();
-
-            return listSave;
+            return query.getResultList();
         } catch (Exception ex) {
             return null;
         } finally {
@@ -107,23 +103,55 @@ public class CategoryImpl implements ICategoryDAO {
     }
 
     @Override
+    public List<Product> findByCategory(Category category) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("from Product prod where prod.category = :cat order by prod.description asc");
+            query.setParameter("cat", category);
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Product> findByUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("from Product prod where prod.unitOfMeasurement = :unitOfMeas "
+                    + "order by prod.description asc");
+            query.setParameter("unitOfMeas", unitOfMeasurement);
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
+    
+    @Override
     public Result delete(int id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
-        
         try {
-            Category save = em.find(Category.class, id);
+            Product save = findById(id);
             if (save == null)
-                return new Result("Categoria não encontrada para deletar", false);
+                return new Result("Produto a ser deletado não encontrado", false);
             
             em.getTransaction().begin();
             em.remove(save);
             em.getTransaction().commit();
             
-            return new Result("Categoria deletada com sucesso", true);
+            return new Result("Produto deletado com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Falha ao deletar categoria", false);
+            return new Result("Falha ao deletar produto, id: "+id, false);
         } finally {
             emf.close();
             em.close();

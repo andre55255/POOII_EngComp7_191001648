@@ -1,15 +1,15 @@
-package com.bakehouse.services_impl;
+package com.bakehouse.services.impl;
 
-import com.bakehouse.dao_impl.MovementImpl;
-import com.bakehouse.dao_impl.UserImpl;
-import com.bakehouse.dao_interfaces.IMovementDAO;
-import com.bakehouse.dao_interfaces.IUserDAO;
+import com.bakehouse.dao.impl.MovementDAOImpl;
+import com.bakehouse.dao.impl.UserDAOImpl;
+import com.bakehouse.dao.interfaces.IMovementDAO;
+import com.bakehouse.dao.interfaces.IUserDAO;
 import com.bakehouse.domain.Movement;
 import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.Crypt;
 import com.bakehouse.helpers.Result;
-import com.bakehouse.services_interfaces.IAccountService;
+import com.bakehouse.services.interfaces.IAccountService;
 import com.bakehouse.viewobjects.CreateEditUserVO;
 import com.bakehouse.viewobjects.LoginVO;
 import java.util.List;
@@ -20,8 +20,8 @@ public class AccountService implements IAccountService {
     private IMovementDAO movementDao;
     
     public AccountService() {
-        userDao = new UserImpl();
-        movementDao = new MovementImpl();
+        userDao = new UserDAOImpl();
+        movementDao = new MovementDAOImpl();
     }
     
     @Override
@@ -35,12 +35,12 @@ public class AccountService implements IAccountService {
             if (user == null)
                 return new Result("Usuário não encontrado", false);
             
+            String passVO = Crypt.password(loginVO.getPassword());
+            if (!passVO.equals(user.getPassword()) && !loginVO.getPassword().equals(user.getPassword()))
+                return new Result("Senha não confere", false);
+            
             user.setStatus("Ativo");
             userDao.update(user);
-            
-            String passVO = Crypt.password(loginVO.getPassword());
-            if (!passVO.equals(user.getPassword()) || !loginVO.getPassword().equals(user.getPassword()))
-                return new Result("Senha não confere", false);
             
             ApplicationUser.setLoginUser(user);
             return new Result("Login efetuado com sucesso", true);

@@ -1,7 +1,7 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.IUnitOfMeasurementDAO;
-import com.bakehouse.domain.UnitOfMeasurement;
+import com.bakehouse.dao.interfaces.ICategoryDAO;
+import com.bakehouse.domain.Category;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
 import java.util.List;
@@ -10,21 +10,22 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
+public class CategoryDAOImpl implements ICategoryDAO {
+
     @Override
-    public Result insert(UnitOfMeasurement unitOfMeasurement) {
+    public Result insert(Category category) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            em.persist(unitOfMeasurement);
+            em.persist(category);
             em.getTransaction().commit();
 
-            return new Result("Unidade de medida inserida com sucesso", true);
+            return new Result("Categoria inserida com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Falha ao deletar unidade de medida", false);
+            return new Result("Falha ao deletar categoria", false);
         } finally {
             emf.close();
             em.close();
@@ -32,19 +33,19 @@ public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
     }
 
     @Override
-    public Result update(UnitOfMeasurement unitOfMeasurement) {
+    public Result update(Category category) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
 
         try {
             em.getTransaction().begin();
-            em.merge(unitOfMeasurement);
+            em.merge(category);
             em.getTransaction().commit();
 
-            return new Result("Unidade de medida editada com sucesso", true);
+            return new Result("Categoria editada com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Erro ao editar unidade de medida no banco de dados", false);
+            return new Result("Erro ao editar categoria no banco de dados", false);
         } finally {
             emf.close();
             em.close();
@@ -52,13 +53,13 @@ public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
     }
 
     @Override
-    public List<UnitOfMeasurement> findAll() {
+    public List<Category> findAll() {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
 
         try {
-            Query query = em.createQuery("from UnitOfMeasurement u order by u.description asc");
-            List<UnitOfMeasurement> categories = query.getResultList();
+            Query query = em.createQuery("from Category c order by c.description asc");
+            List<Category> categories = query.getResultList();
 
             return categories;
         } catch (Exception ex) {
@@ -70,12 +71,12 @@ public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
     }
 
     @Override
-    public UnitOfMeasurement findById(int id) {
+    public Category findById(int id) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
 
         try {
-            UnitOfMeasurement save = em.find(UnitOfMeasurement.class, id);
+            Category save = em.find(Category.class, id);
 
             return save;
         } catch (Exception ex) {
@@ -87,14 +88,14 @@ public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
     }
 
     @Override
-    public List<UnitOfMeasurement> findByDescription(String description) {
+    public List<Category> findByDescription(String description) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
 
         try {
-            Query query = em.createQuery("from UnitOfMeasurement cat where cat.description like :desc order by cat.description asc");
+            Query query = em.createQuery("from Category cat where cat.description like :desc order by cat.description asc");
             query.setParameter("desc", "%"+description+"%");
-            List<UnitOfMeasurement> listSave = query.getResultList();
+            List<Category> listSave = query.getResultList();
 
             return listSave;
         } catch (Exception ex) {
@@ -111,18 +112,18 @@ public class UnitOfMeasurementImpl implements IUnitOfMeasurementDAO {
         EntityManager em = emf.createEntityManager();
         
         try {
-            UnitOfMeasurement save = em.find(UnitOfMeasurement.class, id);
+            Category save = em.find(Category.class, id);
             if (save == null)
-                return new Result("Unidade de medida não encontrada para deletar", false);
+                return new Result("Categoria não encontrada para deletar", false);
             
             em.getTransaction().begin();
             em.remove(save);
             em.getTransaction().commit();
             
-            return new Result("Unidade de medida deletada com sucesso", true);
+            return new Result("Categoria deletada com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
-            return new Result("Falha ao deletar unidade de medida", false);
+            return new Result("Falha ao deletar categoria", false);
         } finally {
             emf.close();
             em.close();

@@ -46,7 +46,7 @@ public class EmitAlert {
                 msg, 
                 "Sucesso", 
                 JOptionPane.PLAIN_MESSAGE, 
-                this.getIcon("/com/bakehouse/assets/ico-alert-success.png", 40, 40));
+                this.getIcon("/assets/ico-alert-success.png", 40, 40));
     }
     
     public void error() {
@@ -54,7 +54,7 @@ public class EmitAlert {
                 msg, 
                 "Erro", 
                 JOptionPane.PLAIN_MESSAGE,
-                this.getIcon("/com/bakehouse/assets/ico-alert-error.png", 40, 40));
+                this.getIcon("/assets/ico-alert-error.png", 40, 40));
     }
     
     public void warning() {
@@ -62,6 +62,6 @@ public class EmitAlert {
                 msg, 
                 "Aviso", 
                 JOptionPane.PLAIN_MESSAGE,
-                this.getIcon("/com/bakehouse/assets/ico-alert-warning.png", 40, 40));
+                this.getIcon("/assets/ico-alert-warning.png", 40, 40));
     }
 }

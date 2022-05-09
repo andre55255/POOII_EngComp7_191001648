@@ -1,6 +1,6 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.IUserDAO;
+import com.bakehouse.dao.interfaces.IUserDAO;
 import com.bakehouse.domain.Role;
 import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ConstantsStatic;
@@ -11,7 +11,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class UserImpl implements IUserDAO {
+public class UserDAOImpl implements IUserDAO {
 
     @Override
     public Result insert(User user) {

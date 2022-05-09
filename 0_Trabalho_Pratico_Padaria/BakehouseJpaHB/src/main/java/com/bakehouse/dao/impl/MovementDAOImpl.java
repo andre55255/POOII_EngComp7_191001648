@@ -1,6 +1,6 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.IMovementDAO;
+import com.bakehouse.dao.interfaces.IMovementDAO;
 import com.bakehouse.domain.Movement;
 import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ConstantsStatic;
@@ -12,7 +12,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class MovementImpl implements IMovementDAO {
+public class MovementDAOImpl implements IMovementDAO {
 
     @Override
     public Result insert(Movement movement) {

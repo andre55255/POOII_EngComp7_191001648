@@ -1,6 +1,6 @@
-package com.bakehouse.dao_impl;
+package com.bakehouse.dao.impl;
 
-import com.bakehouse.dao_interfaces.IRoleDAO;
+import com.bakehouse.dao.interfaces.IRoleDAO;
 import com.bakehouse.domain.Role;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
@@ -10,7 +10,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
-public class RoleImpl implements IRoleDAO {
+public class RoleDAOImpl implements IRoleDAO {
 
     @Override
     public Result insert(Role role) {

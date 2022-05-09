@@ -1,6 +1,6 @@
 package com.bakehouse.main;
 
-import com.bakehouse.gui.LoginGUI;
+import com.bakehouse.gui_public.LoginGUI;
 
 public class Main {
 
