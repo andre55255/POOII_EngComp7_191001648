@@ -1,16 +1,15 @@
 package com.bakehouse.main;
 
-import com.bakehouse.dao_interfaces.IProductDAO;
-import com.bakehouse.dao_impl.ProductImpl;
-import com.bakehouse.domain.Product;
-import java.util.List;
+import com.bakehouse.gui.LoginGUI;
 
 public class Main {
 
     public static void main(String[] args) {
-        IProductDAO pDao = new ProductImpl();
-        List<Product> list = pDao.findAll();
-        
-        System.out.println("");
+        try {
+            LoginGUI guiInitial = new LoginGUI();
+            guiInitial.setVisible(true);
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+        }
     }
 }
