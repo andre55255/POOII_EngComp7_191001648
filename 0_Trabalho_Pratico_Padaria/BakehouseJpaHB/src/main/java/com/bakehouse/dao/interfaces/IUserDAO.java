@@ -19,7 +19,7 @@ public interface IUserDAO {
     
     public List<User> findByName(String name);
     
-    public List<User> findByRole(Role role);
+    public List<User> findByRole(String roleStr);
     
     public User findByLogin(String login);
 }

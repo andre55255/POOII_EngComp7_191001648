@@ -1,8 +1,8 @@
 package com.bakehouse.services.interfaces;
 
 import com.bakehouse.helpers.Result;
-import com.bakehouse.viewobjects.CreateEditUserVO;
-import com.bakehouse.viewobjects.LoginVO;
+import com.bakehouse.viewobjects.account.CreateEditUserVO;
+import com.bakehouse.viewobjects.account.LoginVO;
 
 public interface IAccountService {
     

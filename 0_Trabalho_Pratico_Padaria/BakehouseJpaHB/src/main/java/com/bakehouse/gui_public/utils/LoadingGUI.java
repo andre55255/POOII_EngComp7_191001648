@@ -1,4 +1,4 @@
-package com.bakehouse.gui_public;
+package com.bakehouse.gui_public.utils;
 
 import java.awt.Color;
 import javax.swing.UIManager;

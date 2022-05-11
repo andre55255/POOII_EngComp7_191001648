@@ -108,7 +108,7 @@ public class RoleDAOImpl implements IRoleDAO {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            Query query = em.createQuery("from Role rol where rol.description like :desc order by r.description asc");
+            Query query = em.createQuery("from Role rol where rol.description like :desc order by rol.description asc");
             query.setParameter("desc", "%"+description+"%");
             return query.getResultList();
         } catch (Exception ex) {

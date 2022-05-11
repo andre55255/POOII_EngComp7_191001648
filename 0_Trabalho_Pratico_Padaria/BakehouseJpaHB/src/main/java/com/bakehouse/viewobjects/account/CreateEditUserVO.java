@@ -1,4 +1,4 @@
-package com.bakehouse.viewobjects;
+package com.bakehouse.viewobjects.account;
 
 import com.bakehouse.domain.Role;
 import com.bakehouse.helpers.Result;

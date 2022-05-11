@@ -1,11 +1,12 @@
-package com.bakehouse.gui_public;
+package com.bakehouse.gui_public.login;
 
-import com.bakehouse.gui_public.LoadingGUI;
+import com.bakehouse.gui_private.template.Home;
+import com.bakehouse.gui_public.utils.LoadingGUI;
 import com.bakehouse.helpers.EmitAlert;
 import com.bakehouse.helpers.Result;
 import com.bakehouse.services.impl.AccountService;
 import com.bakehouse.services.interfaces.IAccountService;
-import com.bakehouse.viewobjects.LoginVO;
+import com.bakehouse.viewobjects.account.LoginVO;
 import java.awt.Component;
 
 public class LoginGUI extends javax.swing.JFrame {
@@ -234,7 +235,8 @@ public class LoginGUI extends javax.swing.JFrame {
                     }
 
                     loadingGui.dispose();
-                    new EmitAlert(compThis, "Login efetuado com sucesso").success();
+                    new Home().setVisible(true);
+                    compThis.setVisible(false);
                 }
             };
 

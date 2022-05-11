@@ -10,8 +10,8 @@ import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.Crypt;
 import com.bakehouse.helpers.Result;
 import com.bakehouse.services.interfaces.IAccountService;
-import com.bakehouse.viewobjects.CreateEditUserVO;
-import com.bakehouse.viewobjects.LoginVO;
+import com.bakehouse.viewobjects.account.CreateEditUserVO;
+import com.bakehouse.viewobjects.account.LoginVO;
 import java.util.List;
 
 public class AccountService implements IAccountService {

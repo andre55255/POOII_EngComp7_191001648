@@ -1,10 +1,12 @@
 package com.bakehouse.dao.impl;
 
+import com.bakehouse.dao.interfaces.IRoleDAO;
 import com.bakehouse.dao.interfaces.IUserDAO;
 import com.bakehouse.domain.Role;
 import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -121,13 +123,19 @@ public class UserDAOImpl implements IUserDAO {
     }
 
     @Override
-    public List<User> findByRole(Role role) {
+    public List<User> findByRole(String roleStr) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            Query query = em.createQuery("from User us where us.role = :role");
-            query.setParameter("role", role);
-            return query.getResultList();
+            IRoleDAO roleDao = new RoleDAOImpl();
+            List<Role> roles = roleDao.findByDescription(roleStr);
+            List<User> users = new ArrayList<>();
+            for (Role role : roles) {
+                Query query = em.createQuery("from User us where us.role = :role");
+                query.setParameter("role", role);
+                users.addAll(query.getResultList());
+            }
+            return users;
         } catch (Exception ex) {
             return null;
         } finally {
