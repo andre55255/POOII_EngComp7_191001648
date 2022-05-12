@@ -1,4 +1,4 @@
-package com.bakehouse.gui_private.users;
+package com.bakehouse.gui_private.users_roles;
 
 import com.bakehouse.domain.User;
 import com.bakehouse.gui_public.utils.LoadingGUI;

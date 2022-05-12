@@ -1,10 +1,13 @@
 package com.bakehouse.services.impl;
 
 import com.bakehouse.dao.impl.MovementDAOImpl;
+import com.bakehouse.dao.impl.RoleDAOImpl;
 import com.bakehouse.dao.impl.UserDAOImpl;
 import com.bakehouse.dao.interfaces.IMovementDAO;
+import com.bakehouse.dao.interfaces.IRoleDAO;
 import com.bakehouse.dao.interfaces.IUserDAO;
 import com.bakehouse.domain.Movement;
+import com.bakehouse.domain.Role;
 import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.Crypt;
@@ -13,14 +16,17 @@ import com.bakehouse.helpers.Validations;
 import com.bakehouse.services.interfaces.IAccountService;
 import com.bakehouse.viewobjects.account.CreateEditUserVO;
 import com.bakehouse.viewobjects.account.LoginVO;
+import com.bakehouse.viewobjects.account.RoleVO;
 import java.util.List;
 
 public class AccountService implements IAccountService {
 
     private IUserDAO userDao;
+    private IRoleDAO roleDao;
     private IMovementDAO movementDao;
     
     public AccountService() {
+        roleDao = new RoleDAOImpl();
         userDao = new UserDAOImpl();
         movementDao = new MovementDAOImpl();
     }
@@ -114,6 +120,55 @@ public class AccountService implements IAccountService {
             return resultDelete;
         } catch (Exception ex) {
             return new Result("Falha inesperada ao deletar usuário", false);
+        }
+    }
+
+    @Override
+    public Result createRole(RoleVO roleVO) {
+        try {
+            Result valid = roleVO.valid();
+            if (!valid.isSuccess())
+                return valid;
+            
+            Role roleEntity = new Role();
+            roleEntity.setId(0);
+            roleEntity.setDescription(roleVO.getDescription());
+            
+            Result resultPersist = roleDao.insert(roleEntity);
+            return resultPersist;
+        } catch (Exception ex) {
+            return new Result("Falha inesperada ao criar perfil", false);
+        }
+    }
+
+    @Override
+    public Result editRole(RoleVO roleVO) {
+        try {
+            Result valid = roleVO.valid();
+            if (!valid.isSuccess())
+                return valid;
+            
+            Role roleEntity = new Role();
+            roleEntity.setId(roleVO.getId());
+            roleEntity.setDescription(roleVO.getDescription());
+            
+            Result resultUpdate = roleDao.update(roleEntity);
+            return resultUpdate;
+        } catch (Exception ex) {
+            return new Result("Falha inesperada ao editar perfil", false);
+        }
+    }
+
+    @Override
+    public Result deleteRole(int id) {
+        try {
+            if (id <= 0)
+                return new Result("ID inválido", false);
+            
+            Result resultDelete = roleDao.delete(id);
+            return resultDelete;
+        } catch (Exception ex) {
+            return new Result("Falha inesperada ao deletar perfil", false);
         }
     }
 }

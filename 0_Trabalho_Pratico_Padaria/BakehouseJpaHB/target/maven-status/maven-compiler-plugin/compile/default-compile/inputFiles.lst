@@ -5,12 +5,15 @@ A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpa
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\interfaces\IOrderPadDAO.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\interfaces\IOrderPadItem.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\impl\OrderPadItemDAOImpl.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\ResetPassword.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_public\login\LoginGUI.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\domain\Movement.java
-A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_public\users\UsersMain.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\CreateUser.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\interfaces\IProductDAO.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\helpers\ConstantsStatic.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\helpers\Crypt.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\CreateRole.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\EditRole.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\helpers\EmitAlert.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\interfaces\ICategoryDAO.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\helpers\Result.java
@@ -22,6 +25,8 @@ A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpa
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\domain\OrderPadItem.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\domain\OrderPad.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\viewobjects\account\CreateEditUserVO.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\EditUser.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\viewobjects\account\RoleVO.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\impl\RoleDAOImpl.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\domain\Category.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\template\Home.java
@@ -33,6 +38,7 @@ A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpa
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\viewobjects\account\LoginVO.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\impl\UnitOfMeasurementDAOImpl.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\dao\impl\ProductDAOImpl.java
+A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_private\users_roles\UsersRolesMain.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\gui_public\utils\LoadingGUI.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\main\Main.java
 A:\Faculdade\7 Periodo\POO II\Exercicios\0_Trabalho_Pratico_Padaria\BakehouseJpaHB\src\main\java\com\bakehouse\domain\Role.java

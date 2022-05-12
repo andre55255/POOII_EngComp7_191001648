@@ -2,7 +2,7 @@ package com.bakehouse.gui_private.template;
 
 import com.bakehouse.domain.User;
 import com.bakehouse.gui_public.login.LoginGUI;
-import com.bakehouse.gui_private.users.UsersMain;
+import com.bakehouse.gui_private.users_roles.UsersRolesMain;
 import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.EmitAlert;
 import java.awt.BorderLayout;
@@ -463,7 +463,7 @@ public class Home extends javax.swing.JFrame {
 
     private void NavUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NavUsersMouseClicked
         NavUsers.setBackground(new Color(255,102,51));
-        handlerPageDinamic(new UsersMain());
+        handlerPageDinamic(new UsersRolesMain());
     }//GEN-LAST:event_NavUsersMouseClicked
 
     private void NavUsersMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NavUsersMouseEntered

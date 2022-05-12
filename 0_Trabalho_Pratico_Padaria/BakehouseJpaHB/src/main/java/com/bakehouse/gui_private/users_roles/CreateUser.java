@@ -1,4 +1,4 @@
-package com.bakehouse.gui_private.users;
+package com.bakehouse.gui_private.users_roles;
 
 import com.bakehouse.dao.impl.RoleDAOImpl;
 import com.bakehouse.dao.interfaces.IRoleDAO;
@@ -23,13 +23,25 @@ public class CreateUser extends javax.swing.JFrame {
     }
 
     private void loadRolesComboBox() {
-        try {
+        try
+        {
+            LoadingGUI loadGui = new LoadingGUI();
+            loadGui.setVisible(true);
             IRoleDAO roleDao = new RoleDAOImpl();
-            this.roles = roleDao.findAll();
-            for (Role role : roles) {
-                jcbRolesUsers.addItem(role.getDescription());
-            }
-        } catch (Exception ex) {
+            Thread t1 = new Thread() {
+                @Override
+                public void run() {
+                    roles = roleDao.findAll();
+                    for (Role role : roles)
+                    {
+                        jcbRolesUsers.addItem(role.getDescription());
+                    }
+                    loadGui.dispose();
+                }
+            };
+            t1.start();
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Erro ao carregar perfis").error();
             this.dispose();
         }

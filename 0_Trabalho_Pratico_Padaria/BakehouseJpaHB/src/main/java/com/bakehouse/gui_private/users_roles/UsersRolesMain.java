@@ -1,7 +1,10 @@
-package com.bakehouse.gui_private.users;
+package com.bakehouse.gui_private.users_roles;
 
+import com.bakehouse.dao.impl.RoleDAOImpl;
 import com.bakehouse.dao.impl.UserDAOImpl;
+import com.bakehouse.dao.interfaces.IRoleDAO;
 import com.bakehouse.dao.interfaces.IUserDAO;
+import com.bakehouse.domain.Role;
 import com.bakehouse.domain.User;
 import com.bakehouse.gui_public.utils.LoadingGUI;
 import com.bakehouse.helpers.ApplicationUser;
@@ -16,101 +19,189 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-public class UsersMain extends javax.swing.JPanel {
+public class UsersRolesMain extends javax.swing.JPanel {
 
     private List<User> users = new ArrayList<>();
-    
-    public UsersMain() {
+    private List<Role> roles = new ArrayList<>();
+
+    public UsersRolesMain() {
         initComponents();
         loadAllUsersToTableFromRepository();
     }
-    
+
     private void loadUsersByNameToTableFromRepository(String name) {
-        try {
+        try
+        {
             IUserDAO userDao = new UserDAOImpl();
             final LoadingGUI loadingGUI = new LoadingGUI();
             loadingGUI.setVisible(true);
-            
-            Thread t = new Thread(){
+
+            Thread t = new Thread() {
                 @Override
                 public void run() {
                     users.clear();
                     List<User> usersDB = userDao.findByName(name);
                     if (usersDB != null)
+                    {
                         users.addAll(usersDB);
+                    }
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
             };
             t.start();
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao buscar usuários por perfil no banco de dados").error();
         }
     }
-    
+
     private void loadUsersByRoleToTableFromRepository(String role) {
-        try {
+        try
+        {
             IUserDAO userDao = new UserDAOImpl();
             final LoadingGUI loadingGUI = new LoadingGUI();
             loadingGUI.setVisible(true);
-            
-            Thread t = new Thread(){
+
+            Thread t = new Thread() {
                 @Override
                 public void run() {
                     users.clear();
                     List<User> usersDB = userDao.findByRole(role);
                     if (usersDB != null)
+                    {
                         users.addAll(usersDB);
+                    }
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
             };
             t.start();
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao buscar usuários por perfil no banco de dados").error();
         }
     }
-    
+
     private void loadAllUsersToTableFromRepository() {
-        try {
+        try
+        {
             IUserDAO userDao = new UserDAOImpl();
             final LoadingGUI loadingGUI = new LoadingGUI();
             loadingGUI.setVisible(true);
-            
-            Thread t = new Thread(){
+
+            Thread t = new Thread() {
                 @Override
                 public void run() {
                     users.clear();
                     List<User> usersDB = userDao.findAll();
                     if (usersDB != null)
+                    {
                         users.addAll(usersDB);
+                    }
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
             };
             t.start();
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao buscar todos os usuários no banco de dados").error();
         }
     }
-    
+
     private void loadUsersTable(List<User> users) {
-        try {
+        try
+        {
             DefaultTableModel model = (DefaultTableModel) jTableUsers.getModel();
             model.setRowCount(0);
-            for (User user : users) {
-                model.addRow(new Object[] {
+            for (User user : users)
+            {
+                model.addRow(new Object[]
+                {
                     user.getId(),
                     user.getLogin(),
                     user.getName(),
                     user.getRole().getDescription()
                 });
-            } 
-        } catch (Exception ex) {
+            }
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao carregar usuários na tabela").error();
         }
     }
-    
+
+    private void loadRoleByDescriptionToTableFromRepository(String description) {
+        try
+        {
+            IRoleDAO roleDao = new RoleDAOImpl();
+            final LoadingGUI loadingGUI = new LoadingGUI();
+            loadingGUI.setVisible(true);
+            Thread t = new Thread() {
+                @Override
+                public void run() {
+                    roles.clear();
+                    List<Role> rolesDB = roleDao.findByDescription(description);
+                    if (rolesDB != null)
+                    {
+                        roles.addAll(rolesDB);
+                    }
+                    loadRolesTable(roles);
+                    loadingGUI.dispose();
+                }
+            };
+            t.start();
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao buscar usuários por perfil no banco de dados").error();
+        }
+    }
+
+    private void loadAllRolesToTableFromRepository() {
+        try
+        {
+            IRoleDAO roleDao = new RoleDAOImpl();
+            final LoadingGUI loadingGUI = new LoadingGUI();
+            loadingGUI.setVisible(true);
+            Thread t = new Thread() {
+                @Override
+                public void run() {
+                    roles.clear();
+                    List<Role> rolesDB = roleDao.findAll();
+                    if (rolesDB != null)
+                    {
+                        roles.addAll(rolesDB);
+                    }
+                    loadRolesTable(roles);
+                    loadingGUI.dispose();
+                }
+            };
+            t.start();
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao buscar todos os usuários no banco de dados").error();
+        }
+    }
+
+    private void loadRolesTable(List<Role> roles) {
+        try
+        {
+            DefaultTableModel model = (DefaultTableModel) jTableRole.getModel();
+            model.setRowCount(0);
+            for (Role role : roles)
+            {
+                model.addRow(new Object[]
+                {
+                    role.getId(),
+                    role.getDescription()
+                });
+            }
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao carregar usuários na tabela").error();
+        }
+    }
+
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -134,6 +225,18 @@ public class UsersMain extends javax.swing.JPanel {
         jbEditUser = new javax.swing.JButton();
         jbRemoveUser = new javax.swing.JButton();
         jbResetPassword = new javax.swing.JButton();
+        jpRole = new javax.swing.JPanel();
+        jLabel12 = new javax.swing.JLabel();
+        jScrollPane4 = new javax.swing.JScrollPane();
+        jTableRole = new javax.swing.JTable();
+        jLabel13 = new javax.swing.JLabel();
+        jtfSearchRole = new javax.swing.JTextField();
+        jLabel14 = new javax.swing.JLabel();
+        jcbxRoleFilter = new javax.swing.JComboBox<>();
+        jbSearchRoles = new javax.swing.JButton();
+        jbAddRole = new javax.swing.JButton();
+        jbEditRole = new javax.swing.JButton();
+        jbRemoveRole = new javax.swing.JButton();
 
         jpNav.setBackground(new java.awt.Color(255, 255, 255));
 
@@ -386,7 +489,7 @@ public class UsersMain extends javax.swing.JPanel {
                             .addComponent(jbSearchUsers, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
                     .addGroup(jpUsersLayout.createSequentialGroup()
                         .addComponent(jbResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 240, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 260, Short.MAX_VALUE)
                         .addComponent(jbAddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(jbEditUser, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -415,10 +518,221 @@ public class UsersMain extends javax.swing.JPanel {
                     .addComponent(jbEditUser, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbRemoveUser, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(30, Short.MAX_VALUE))
+                .addContainerGap(52, Short.MAX_VALUE))
         );
 
         jpContent.add(jpUsers, "cardUser");
+
+        jpRole.setBackground(new java.awt.Color(255, 255, 255));
+        jpRole.setName(""); // NOI18N
+
+        jLabel12.setFont(new java.awt.Font("Segoe UI", 1, 16)); // NOI18N
+        jLabel12.setForeground(new java.awt.Color(250, 150, 0));
+        jLabel12.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel12.setText("GERENCIAR PERFIS");
+        jLabel12.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jTableRole.setFont(new java.awt.Font("Segoe UI Semilight", 0, 12)); // NOI18N
+        jTableRole.setForeground(new java.awt.Color(51, 51, 51));
+        jTableRole.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null},
+                {null, null}
+            },
+            new String [] {
+                "ID", "Descrição"
+            }
+        ) {
+            Class[] types = new Class [] {
+                java.lang.Integer.class, java.lang.String.class
+            };
+            boolean[] canEdit = new boolean [] {
+                false, false
+            };
+
+            public Class getColumnClass(int columnIndex) {
+                return types [columnIndex];
+            }
+
+            public boolean isCellEditable(int rowIndex, int columnIndex) {
+                return canEdit [columnIndex];
+            }
+        });
+        jTableRole.setToolTipText("");
+        jTableRole.setGridColor(new java.awt.Color(102, 102, 102));
+        jTableRole.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableRoleMouseClicked(evt);
+            }
+        });
+        jScrollPane4.setViewportView(jTableRole);
+
+        jLabel13.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel13.setForeground(new java.awt.Color(250, 150, 50));
+        jLabel13.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel13.setText("Pesquisar:");
+        jLabel13.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jtfSearchRole.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jtfSearchRole.setForeground(new java.awt.Color(52, 52, 52));
+        jtfSearchRole.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 150, 0), 2, true));
+
+        jLabel14.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
+        jLabel14.setForeground(new java.awt.Color(250, 150, 50));
+        jLabel14.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        jLabel14.setText("Filtrar por:");
+        jLabel14.setHorizontalTextPosition(javax.swing.SwingConstants.CENTER);
+
+        jcbxRoleFilter.setFont(new java.awt.Font("Segoe UI", 0, 12)); // NOI18N
+        jcbxRoleFilter.setForeground(new java.awt.Color(52, 52, 52));
+        jcbxRoleFilter.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Todos", "Descrição" }));
+        jcbxRoleFilter.setToolTipText("");
+        jcbxRoleFilter.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(250, 150, 0), 2, true));
+
+        jbSearchRoles.setBackground(new java.awt.Color(250, 150, 0));
+        jbSearchRoles.setFont(new java.awt.Font("Segoe UI", 0, 13)); // NOI18N
+        jbSearchRoles.setForeground(new java.awt.Color(255, 255, 255));
+        jbSearchRoles.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/ico-search.png"))); // NOI18N
+        jbSearchRoles.setText("Pesquisar");
+        jbSearchRoles.setAlignmentX(0.5F);
+        jbSearchRoles.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
+        jbSearchRoles.setBorderPainted(false);
+        jbSearchRoles.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbSearchRoles.setFocusable(false);
+        jbSearchRoles.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbSearchRoles.setMargin(new java.awt.Insets(8, 20, 8, 20));
+        jbSearchRoles.setName(""); // NOI18N
+        jbSearchRoles.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbSearchRolesActionPerformed(evt);
+            }
+        });
+
+        jbAddRole.setBackground(new java.awt.Color(36, 162, 73));
+        jbAddRole.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jbAddRole.setForeground(new java.awt.Color(255, 255, 255));
+        jbAddRole.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/ico-add.png"))); // NOI18N
+        jbAddRole.setText("Adicionar");
+        jbAddRole.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
+        jbAddRole.setBorderPainted(false);
+        jbAddRole.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbAddRole.setFocusable(false);
+        jbAddRole.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbAddRole.setMargin(new java.awt.Insets(8, 20, 8, 20));
+        jbAddRole.setName(""); // NOI18N
+        jbAddRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbAddRoleActionPerformed(evt);
+            }
+        });
+
+        jbEditRole.setBackground(new java.awt.Color(36, 22, 84));
+        jbEditRole.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jbEditRole.setForeground(new java.awt.Color(255, 255, 255));
+        jbEditRole.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/ico-edit.png"))); // NOI18N
+        jbEditRole.setText("Editar");
+        jbEditRole.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
+        jbEditRole.setBorderPainted(false);
+        jbEditRole.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbEditRole.setEnabled(false);
+        jbEditRole.setFocusable(false);
+        jbEditRole.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbEditRole.setMargin(new java.awt.Insets(8, 20, 8, 20));
+        jbEditRole.setName(""); // NOI18N
+        jbEditRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbEditRoleActionPerformed(evt);
+            }
+        });
+
+        jbRemoveRole.setBackground(new java.awt.Color(255, 0, 51));
+        jbRemoveRole.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
+        jbRemoveRole.setForeground(new java.awt.Color(255, 255, 255));
+        jbRemoveRole.setIcon(new javax.swing.ImageIcon(getClass().getResource("/assets/ico-remove.png"))); // NOI18N
+        jbRemoveRole.setText("Remover");
+        jbRemoveRole.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
+        jbRemoveRole.setBorderPainted(false);
+        jbRemoveRole.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbRemoveRole.setEnabled(false);
+        jbRemoveRole.setFocusable(false);
+        jbRemoveRole.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
+        jbRemoveRole.setMargin(new java.awt.Insets(8, 20, 8, 20));
+        jbRemoveRole.setName(""); // NOI18N
+        jbRemoveRole.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jbRemoveRoleActionPerformed(evt);
+            }
+        });
+
+        javax.swing.GroupLayout jpRoleLayout = new javax.swing.GroupLayout(jpRole);
+        jpRole.setLayout(jpRoleLayout);
+        jpRoleLayout.setHorizontalGroup(
+            jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpRoleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addGroup(jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jLabel12, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jScrollPane4)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpRoleLayout.createSequentialGroup()
+                        .addComponent(jLabel14)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jcbxRoleFilter, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jpRoleLayout.createSequentialGroup()
+                                .addComponent(jLabel13)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jtfSearchRole, javax.swing.GroupLayout.PREFERRED_SIZE, 244, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(jbSearchRoles, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 93, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jpRoleLayout.createSequentialGroup()
+                        .addGap(0, 436, Short.MAX_VALUE)
+                        .addComponent(jbAddRole, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbEditRole, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jbRemoveRole, javax.swing.GroupLayout.PREFERRED_SIZE, 176, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
+        );
+        jpRoleLayout.setVerticalGroup(
+            jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jpRoleLayout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel12, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel13, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jtfSearchRole, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel14, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jcbxRoleFilter, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jbSearchRoles, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jScrollPane4, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(jpRoleLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jbAddRole, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbEditRole, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jbRemoveRole, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addContainerGap(52, Short.MAX_VALUE))
+        );
+
+        jpContent.add(jpRole, "cardRole");
 
         javax.swing.GroupLayout jpNavLayout = new javax.swing.GroupLayout(jpNav);
         jpNav.setLayout(jpNavLayout);
@@ -471,99 +785,122 @@ public class UsersMain extends javax.swing.JPanel {
     private void jbUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbUsersActionPerformed
         CardLayout c1 = (CardLayout) jpContent.getLayout();
         c1.show(jpContent, "cardUser");
+        loadAllUsersToTableFromRepository();
     }//GEN-LAST:event_jbUsersActionPerformed
 
     private void jbRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRolesActionPerformed
-        // TODO add your handling code here:
+        CardLayout c = (CardLayout) jpContent.getLayout();
+        c.show(jpContent, "cardRole");
+        loadAllRolesToTableFromRepository();
     }//GEN-LAST:event_jbRolesActionPerformed
 
     private void jbSearchUsersActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSearchUsersActionPerformed
-        try {
+        try
+        {
             int indexSelected = jcbFilterUsers.getSelectedIndex();
-            if (indexSelected == 0) {
+            if (indexSelected == 0)
+            {
                 loadAllUsersToTableFromRepository();
                 return;
-            } 
+            }
             String search = jtfSearchUser.getText();
-            if (Validations.stringIsNullOrEmpty(search)) {
+            if (Validations.stringIsNullOrEmpty(search))
+            {
                 new EmitAlert(this, "Informe o valor para filtrar").warning();
                 return;
             }
-            if (indexSelected < 0) {
+            if (indexSelected < 0)
+            {
                 new EmitAlert(this, "Selecione o modo de filtragem").warning();
                 return;
             }
-            if (indexSelected == 1) {
+            if (indexSelected == 1)
+            {
                 loadUsersByRoleToTableFromRepository(search);
-            } else if (indexSelected == 2) {
+            } else if (indexSelected == 2)
+            {
                 loadUsersByNameToTableFromRepository(search);
-            } else {
+            } else
+            {
                 new EmitAlert(this, "Ocorreu um erro inesperado").error();
             }
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Erro ao filtrar usuários").error();
         }
     }//GEN-LAST:event_jbSearchUsersActionPerformed
 
     private void jbAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddUserActionPerformed
-        try {
+        try
+        {
             new CreateUser().setVisible(true);
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao carregar tela de criação de usuário").error();
         }
     }//GEN-LAST:event_jbAddUserActionPerformed
 
     private void jbEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditUserActionPerformed
-        try {
+        try
+        {
             int indexSelectedTable = jTableUsers.getSelectedRow();
-            if (indexSelectedTable < 0) {
+            if (indexSelectedTable < 0)
+            {
                 new EmitAlert(this, "Selecione um usuário na tabela que deseja editar").warning();
                 return;
             }
             User user = this.users.get(indexSelectedTable);
-            if (user == null) {
+            if (user == null)
+            {
                 new EmitAlert(this, "Ocorreu um problema ao buscar usuário para edição").warning();
                 return;
             }
             new EditUser(user).setVisible(true);
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao carregar tela de edição de usuário").error();
         }
     }//GEN-LAST:event_jbEditUserActionPerformed
 
     private void jbRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoveUserActionPerformed
-        try {
+        try
+        {
             int indexSelectedTable = jTableUsers.getSelectedRow();
-            if (indexSelectedTable < 0) {
+            if (indexSelectedTable < 0)
+            {
                 new EmitAlert(this, "Selecione um usuário na tabela que deseja excluir").warning();
                 return;
             }
             User user = this.users.get(indexSelectedTable);
-            if (user == null) {
+            if (user == null)
+            {
                 new EmitAlert(this, "Ocorreu um problema ao buscar usuário para deleção").warning();
                 return;
             }
             User userCurrent = ApplicationUser.getInstance();
-            if (userCurrent.getId() == user.getId()) {
+            if (userCurrent.getId() == user.getId())
+            {
                 new EmitAlert(this, "Não é possível excluir seu próprio usuário enquanto estiver logado").warning();
                 return;
             }
             int isConfirm = new EmitAlert(this, "Deseja mesmo excluir o usuário: "
-                    +user.getName()+", id: "
-                    +user.getId())
+                    + user.getName() + ", id: "
+                    + user.getId())
                     .confirm();
-            
-            if (isConfirm == 0) {
+
+            if (isConfirm == 0)
+            {
                 Component compThis = this;
                 LoadingGUI loadGui = new LoadingGUI();
                 loadGui.setVisible(true);
                 IAccountService accService = new AccountService();
-                Thread t = new Thread(){
+                Thread t = new Thread() {
                     @Override
                     public void run() {
                         Result result = accService.deleteUser(user.getId());
                         loadGui.dispose();
-                        if (!result.isSuccess()) {
+                        if (!result.isSuccess())
+                        {
                             new EmitAlert(compThis, result.getMessage()).error();
                             return;
                         }
@@ -573,25 +910,30 @@ public class UsersMain extends javax.swing.JPanel {
                 };
                 t.start();
             }
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao carregar alerta confirmação de exclusão").error();
         }
     }//GEN-LAST:event_jbRemoveUserActionPerformed
 
     private void jbResetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbResetPasswordActionPerformed
-        try {
+        try
+        {
             int indexSelectedTable = jTableUsers.getSelectedRow();
-            if (indexSelectedTable < 0) {
+            if (indexSelectedTable < 0)
+            {
                 new EmitAlert(this, "Selecione um usuário na tabela que deseja redefinir a senha").warning();
                 return;
             }
             User user = this.users.get(indexSelectedTable);
-            if (user == null) {
+            if (user == null)
+            {
                 new EmitAlert(this, "Ocorreu um problema ao buscar usuário").warning();
                 return;
             }
             new ResetPassword(user).setVisible(true);
-        } catch (Exception ex) {
+        } catch (Exception ex)
+        {
             new EmitAlert(this, "Falha ao carregar a tela de redefinição de senha").error();
         }
     }//GEN-LAST:event_jbResetPasswordActionPerformed
@@ -602,26 +944,156 @@ public class UsersMain extends javax.swing.JPanel {
         jbResetPassword.setEnabled(true);
     }//GEN-LAST:event_jTableUsersMouseClicked
 
+    private void jbRemoveRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoveRoleActionPerformed
+        try
+        {
+            int indexSelectedTable = jTableRole.getSelectedRow();
+            if (indexSelectedTable < 0)
+            {
+                new EmitAlert(this, "Selecione um perfil na tabela que deseja excluir").warning();
+                return;
+            }
+            Role role = this.roles.get(indexSelectedTable);
+            if (role == null)
+            {
+                new EmitAlert(this, "Ocorreu um problema ao buscar perfil para deleção").warning();
+                return;
+            }
+            int isConfirm = new EmitAlert(this, "Deseja mesmo excluir o perfil: "
+                    + role.getDescription()+ ", id: "
+                    + role.getId())
+                    .confirm();
+
+            if (isConfirm == 0)
+            {
+                Component compThis = this;
+                LoadingGUI loadGui = new LoadingGUI();
+                loadGui.setVisible(true);
+                IAccountService accService = new AccountService();
+                Thread t = new Thread() {
+                    @Override
+                    public void run() {
+                        Result result = accService.deleteRole(role.getId());
+                        loadGui.dispose();
+                        if (!result.isSuccess())
+                        {
+                            new EmitAlert(compThis, result.getMessage()).error();
+                            return;
+                        }
+                        new EmitAlert(compThis, "Perfil deletado com sucesso").success();
+                        loadAllRolesToTableFromRepository();
+                    }
+                };
+                t.start();
+            }
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao carregar alerta confirmação de exclusão").error();
+        }
+    }//GEN-LAST:event_jbRemoveRoleActionPerformed
+
+    private void jbEditRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditRoleActionPerformed
+        try
+        {
+            int indexSelectedTable = jTableRole.getSelectedRow();
+            if (indexSelectedTable < 0)
+            {
+                new EmitAlert(this, "Selecione um pefil na tabela que deseja editar").warning();
+                return;
+            }
+            Role role = this.roles.get(indexSelectedTable);
+            if (role == null)
+            {
+                new EmitAlert(this, "Ocorreu um problema ao buscar perfil para edição").warning();
+                return;
+            }
+            new EditRole(role).setVisible(true);
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao carregar tela de edição de usuário").error();
+        }
+    }//GEN-LAST:event_jbEditRoleActionPerformed
+
+    private void jbAddRoleActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddRoleActionPerformed
+        try
+        {
+            new CreateRole().setVisible(true);
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Falha ao carregar tela de criação de perfil").error();
+        }
+    }//GEN-LAST:event_jbAddRoleActionPerformed
+
+    private void jbSearchRolesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbSearchRolesActionPerformed
+        try
+        {
+            int indexSelected = jcbxRoleFilter.getSelectedIndex();
+            if (indexSelected == 0)
+            {
+                loadAllRolesToTableFromRepository();
+                return;
+            }
+            String search = jtfSearchRole.getText();
+            if (Validations.stringIsNullOrEmpty(search))
+            {
+                new EmitAlert(this, "Informe o valor para filtrar").warning();
+                return;
+            }
+            if (indexSelected < 0)
+            {
+                new EmitAlert(this, "Selecione o modo de filtragem").warning();
+                return;
+            }
+            if (indexSelected == 1)
+            {
+                loadRoleByDescriptionToTableFromRepository(search);
+            } else
+            {
+                new EmitAlert(this, "Ocorreu um erro inesperado").error();
+            }
+        } catch (Exception ex)
+        {
+            new EmitAlert(this, "Erro ao filtrar usuários").error();
+        }
+    }//GEN-LAST:event_jbSearchRolesActionPerformed
+
+    private void jTableRoleMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableRoleMouseClicked
+        jbEditRole.setEnabled(true);
+        jbRemoveRole.setEnabled(true);
+    }//GEN-LAST:event_jTableRoleMouseClicked
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel12;
+    private javax.swing.JLabel jLabel13;
+    private javax.swing.JLabel jLabel14;
     private javax.swing.JLabel jLabel3;
     private javax.swing.JLabel jLabel4;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JScrollPane jScrollPane1;
+    private javax.swing.JScrollPane jScrollPane4;
+    private javax.swing.JTable jTableRole;
     private javax.swing.JTable jTableUsers;
+    private javax.swing.JButton jbAddRole;
     private javax.swing.JButton jbAddUser;
+    private javax.swing.JButton jbEditRole;
     private javax.swing.JButton jbEditUser;
+    private javax.swing.JButton jbRemoveRole;
     private javax.swing.JButton jbRemoveUser;
     private javax.swing.JButton jbResetPassword;
     private javax.swing.JButton jbRoles;
+    private javax.swing.JButton jbSearchRoles;
     private javax.swing.JButton jbSearchUsers;
     private javax.swing.JButton jbUsers;
     private javax.swing.JComboBox<String> jcbFilterUsers;
+    private javax.swing.JComboBox<String> jcbxRoleFilter;
     private javax.swing.JPanel jpContent;
     private javax.swing.JPanel jpNav;
+    private javax.swing.JPanel jpRole;
     private javax.swing.JPanel jpUsers;
+    private javax.swing.JTextField jtfSearchRole;
     private javax.swing.JTextField jtfSearchUser;
     // End of variables declaration//GEN-END:variables
 }

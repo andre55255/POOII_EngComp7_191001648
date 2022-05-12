@@ -1,4 +1,4 @@
-package com.bakehouse.gui_private.users;
+package com.bakehouse.gui_private.users_roles;
 
 import com.bakehouse.dao.impl.RoleDAOImpl;
 import com.bakehouse.dao.interfaces.IRoleDAO;
@@ -22,7 +22,7 @@ public class EditUser extends javax.swing.JFrame {
     public EditUser() {
         initComponents();
     }
-    
+
     public EditUser(User user) {
         initComponents();
 
@@ -37,15 +37,17 @@ public class EditUser extends javax.swing.JFrame {
             jtfId.setText(user.getId() + "");
             jtfLogin.setText(user.getLogin());
             jtfName.setText(user.getName());
-            
+
             int indexRoleCbx = -1;
-            for (Role role : this.roles) {
+            for (Role role : this.roles)
+            {
                 indexRoleCbx++;
-                if (role.getId() == user.getRole().getId()) {
+                if (role.getId() == user.getRole().getId())
+                {
                     break;
                 }
             }
-            jcbRolesUsers.setSelectedIndex(indexRoleCbx+1);
+            jcbRolesUsers.setSelectedIndex(indexRoleCbx + 1);
         } catch (Exception ex)
         {
             new EmitAlert(this, "Falha ao carregar informações de usuário selecionado").error();
@@ -56,12 +58,21 @@ public class EditUser extends javax.swing.JFrame {
     private void loadRolesComboBox() {
         try
         {
+            LoadingGUI loadGui = new LoadingGUI();
+            loadGui.setVisible(true);
             IRoleDAO roleDao = new RoleDAOImpl();
-            this.roles = roleDao.findAll();
-            for (Role role : roles)
-            {
-                jcbRolesUsers.addItem(role.getDescription());
-            }
+            Thread t1 = new Thread() {
+                @Override
+                public void run() {
+                    roles = roleDao.findAll();
+                    for (Role role : roles)
+                    {
+                        jcbRolesUsers.addItem(role.getDescription());
+                    }
+                    loadGui.dispose();
+                }
+            };
+            t1.start();
         } catch (Exception ex)
         {
             new EmitAlert(this, "Erro ao carregar perfis").error();
@@ -106,7 +117,6 @@ public class EditUser extends javax.swing.JFrame {
         jLabel5.setAlignmentY(23.0F);
 
         jtfId.setEditable(false);
-        jtfId.setBackground(new java.awt.Color(240, 240, 240));
         jtfId.setFont(new java.awt.Font("Segoe UI", 0, 16)); // NOI18N
         jtfId.setForeground(new java.awt.Color(10, 16, 26));
         jtfId.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(238, 238, 221)));
@@ -319,8 +329,7 @@ public class EditUser extends javax.swing.JFrame {
         //</editor-fold>
         //</editor-fold>
 
-        java.awt.EventQueue.invokeLater(new Runnable()
-        {
+        java.awt.EventQueue.invokeLater(new Runnable() {
             @Override
             public void run() {
                 new EditUser().setVisible(true);
