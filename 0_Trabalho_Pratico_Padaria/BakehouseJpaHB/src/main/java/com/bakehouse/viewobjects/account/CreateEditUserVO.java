@@ -68,7 +68,7 @@ public class CreateEditUserVO {
                 return new Result("Id inválido", false);
             if (Validations.stringIsNullOrEmpty(login))
                 return new Result("Login não informado", false);
-            if (Validations.stringIsNullOrEmpty(password))
+            if (id == -1 && Validations.stringIsNullOrEmpty(password))
                 return new Result("Senha não informada", false);
             if (Validations.stringIsNullOrEmpty(name))
                 return new Result("Nome não informado", false);

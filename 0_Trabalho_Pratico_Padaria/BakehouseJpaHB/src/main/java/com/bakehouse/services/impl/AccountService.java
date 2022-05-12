@@ -9,6 +9,7 @@ import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.Crypt;
 import com.bakehouse.helpers.Result;
+import com.bakehouse.helpers.Validations;
 import com.bakehouse.services.interfaces.IAccountService;
 import com.bakehouse.viewobjects.account.CreateEditUserVO;
 import com.bakehouse.viewobjects.account.LoginVO;
@@ -83,11 +84,13 @@ public class AccountService implements IAccountService {
             if (userEdit == null)
                 return new Result("Usuário não encontrado para editar", false);
             
-            String hashPassword = Crypt.password(userVO.getPassword());
+            if (userVO.getPassword() != null && !Validations.stringIsNullOrEmpty(userVO.getPassword())) {
+                String hashPassword = Crypt.password(userVO.getPassword());
+                userEdit.setPassword(hashPassword);
+            } 
             
             userEdit.setLogin(userVO.getLogin());
             userEdit.setName(userVO.getName());
-            userEdit.setPassword(hashPassword);
             userEdit.setRole(userVO.getRole());
 
             return userDao.update(userEdit);

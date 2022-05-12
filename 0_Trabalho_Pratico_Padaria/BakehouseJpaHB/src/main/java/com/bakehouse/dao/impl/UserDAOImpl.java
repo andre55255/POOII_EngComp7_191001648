@@ -58,15 +58,16 @@ public class UserDAOImpl implements IUserDAO {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            User user = findById(id);
-            if (user == null)
-                return new Result("Usuário não encontrado", false);
-            
             em.getTransaction().begin();
-            em.remove(user);
+            Query query = em.createQuery("delete from User us where us.id = :id");
+            query.setParameter("id", id);
+            int res = query.executeUpdate();
             em.getTransaction().commit();
             
-            return new Result("Usuário deletado com sucesso", true);
+            if (res > 0)
+                return new Result("Usuário deletado com sucesso", true);
+            else
+                return new Result("Falha ao deletar usuário no banco", false);
         } catch (Exception ex) {
             em.getTransaction().rollback();
             return new Result("Falha ao deletar usuário no banco", false);

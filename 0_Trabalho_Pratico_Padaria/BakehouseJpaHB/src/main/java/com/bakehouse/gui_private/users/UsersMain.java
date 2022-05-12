@@ -1,17 +1,25 @@
-package com.bakehouse.gui_public.users;
+package com.bakehouse.gui_private.users;
 
 import com.bakehouse.dao.impl.UserDAOImpl;
 import com.bakehouse.dao.interfaces.IUserDAO;
 import com.bakehouse.domain.User;
 import com.bakehouse.gui_public.utils.LoadingGUI;
+import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.EmitAlert;
+import com.bakehouse.helpers.Result;
 import com.bakehouse.helpers.Validations;
+import com.bakehouse.services.impl.AccountService;
+import com.bakehouse.services.interfaces.IAccountService;
 import java.awt.CardLayout;
+import java.awt.Component;
+import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
 public class UsersMain extends javax.swing.JPanel {
 
+    private List<User> users = new ArrayList<>();
+    
     public UsersMain() {
         initComponents();
         loadAllUsersToTableFromRepository();
@@ -26,7 +34,10 @@ public class UsersMain extends javax.swing.JPanel {
             Thread t = new Thread(){
                 @Override
                 public void run() {
-                    List<User> users = userDao.findByName(name);
+                    users.clear();
+                    List<User> usersDB = userDao.findByName(name);
+                    if (usersDB != null)
+                        users.addAll(usersDB);
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
@@ -46,7 +57,10 @@ public class UsersMain extends javax.swing.JPanel {
             Thread t = new Thread(){
                 @Override
                 public void run() {
-                    List<User> users = userDao.findByRole(role);
+                    users.clear();
+                    List<User> usersDB = userDao.findByRole(role);
+                    if (usersDB != null)
+                        users.addAll(usersDB);
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
@@ -66,7 +80,10 @@ public class UsersMain extends javax.swing.JPanel {
             Thread t = new Thread(){
                 @Override
                 public void run() {
-                    List<User> users = userDao.findAll();
+                    users.clear();
+                    List<User> usersDB = userDao.findAll();
+                    if (usersDB != null)
+                        users.addAll(usersDB);
                     loadUsersTable(users);
                     loadingGUI.dispose();
                 }
@@ -224,6 +241,11 @@ public class UsersMain extends javax.swing.JPanel {
         });
         jTableUsers.setToolTipText("");
         jTableUsers.setGridColor(new java.awt.Color(102, 102, 102));
+        jTableUsers.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jTableUsersMouseClicked(evt);
+            }
+        });
         jScrollPane1.setViewportView(jTableUsers);
 
         jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 13)); // NOI18N
@@ -293,6 +315,7 @@ public class UsersMain extends javax.swing.JPanel {
         jbEditUser.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         jbEditUser.setBorderPainted(false);
         jbEditUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbEditUser.setEnabled(false);
         jbEditUser.setFocusable(false);
         jbEditUser.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbEditUser.setMargin(new java.awt.Insets(8, 20, 8, 20));
@@ -311,6 +334,7 @@ public class UsersMain extends javax.swing.JPanel {
         jbRemoveUser.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         jbRemoveUser.setBorderPainted(false);
         jbRemoveUser.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbRemoveUser.setEnabled(false);
         jbRemoveUser.setFocusable(false);
         jbRemoveUser.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbRemoveUser.setMargin(new java.awt.Insets(8, 20, 8, 20));
@@ -329,6 +353,7 @@ public class UsersMain extends javax.swing.JPanel {
         jbResetPassword.setBorder(new javax.swing.border.LineBorder(new java.awt.Color(255, 255, 255), 0, true));
         jbResetPassword.setBorderPainted(false);
         jbResetPassword.setCursor(new java.awt.Cursor(java.awt.Cursor.HAND_CURSOR));
+        jbResetPassword.setEnabled(false);
         jbResetPassword.setFocusable(false);
         jbResetPassword.setHorizontalTextPosition(javax.swing.SwingConstants.RIGHT);
         jbResetPassword.setMargin(new java.awt.Insets(8, 20, 8, 20));
@@ -383,14 +408,14 @@ public class UsersMain extends javax.swing.JPanel {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jbSearchUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 319, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(18, 18, 18)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 300, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jpUsersLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jbAddUser, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbEditUser, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbRemoveUser, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jbResetPassword, javax.swing.GroupLayout.PREFERRED_SIZE, 39, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addContainerGap(49, Short.MAX_VALUE))
+                .addContainerGap(30, Short.MAX_VALUE))
         );
 
         jpContent.add(jpUsers, "cardUser");
@@ -402,7 +427,7 @@ public class UsersMain extends javax.swing.JPanel {
             .addGroup(jpNavLayout.createSequentialGroup()
                 .addGap(124, 124, 124)
                 .addComponent(jbUsers, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 258, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jbRoles, javax.swing.GroupLayout.PREFERRED_SIZE, 257, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(124, 124, 124))
             .addGroup(jpNavLayout.createSequentialGroup()
@@ -481,20 +506,101 @@ public class UsersMain extends javax.swing.JPanel {
     }//GEN-LAST:event_jbSearchUsersActionPerformed
 
     private void jbAddUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbAddUserActionPerformed
-        // TODO add your handling code here:
+        try {
+            new CreateUser().setVisible(true);
+        } catch (Exception ex) {
+            new EmitAlert(this, "Falha ao carregar tela de criação de usuário").error();
+        }
     }//GEN-LAST:event_jbAddUserActionPerformed
 
     private void jbEditUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbEditUserActionPerformed
-        // TODO add your handling code here:
+        try {
+            int indexSelectedTable = jTableUsers.getSelectedRow();
+            if (indexSelectedTable < 0) {
+                new EmitAlert(this, "Selecione um usuário na tabela que deseja editar").warning();
+                return;
+            }
+            User user = this.users.get(indexSelectedTable);
+            if (user == null) {
+                new EmitAlert(this, "Ocorreu um problema ao buscar usuário para edição").warning();
+                return;
+            }
+            new EditUser(user).setVisible(true);
+        } catch (Exception ex) {
+            new EmitAlert(this, "Falha ao carregar tela de edição de usuário").error();
+        }
     }//GEN-LAST:event_jbEditUserActionPerformed
 
     private void jbRemoveUserActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbRemoveUserActionPerformed
-        // TODO add your handling code here:
+        try {
+            int indexSelectedTable = jTableUsers.getSelectedRow();
+            if (indexSelectedTable < 0) {
+                new EmitAlert(this, "Selecione um usuário na tabela que deseja excluir").warning();
+                return;
+            }
+            User user = this.users.get(indexSelectedTable);
+            if (user == null) {
+                new EmitAlert(this, "Ocorreu um problema ao buscar usuário para deleção").warning();
+                return;
+            }
+            User userCurrent = ApplicationUser.getInstance();
+            if (userCurrent.getId() == user.getId()) {
+                new EmitAlert(this, "Não é possível excluir seu próprio usuário enquanto estiver logado").warning();
+                return;
+            }
+            int isConfirm = new EmitAlert(this, "Deseja mesmo excluir o usuário: "
+                    +user.getName()+", id: "
+                    +user.getId())
+                    .confirm();
+            
+            if (isConfirm == 0) {
+                Component compThis = this;
+                LoadingGUI loadGui = new LoadingGUI();
+                loadGui.setVisible(true);
+                IAccountService accService = new AccountService();
+                Thread t = new Thread(){
+                    @Override
+                    public void run() {
+                        Result result = accService.deleteUser(user.getId());
+                        loadGui.dispose();
+                        if (!result.isSuccess()) {
+                            new EmitAlert(compThis, result.getMessage()).error();
+                            return;
+                        }
+                        new EmitAlert(compThis, "Usuário deletado com sucesso").success();
+                        loadAllUsersToTableFromRepository();
+                    }
+                };
+                t.start();
+            }
+        } catch (Exception ex) {
+            new EmitAlert(this, "Falha ao carregar alerta confirmação de exclusão").error();
+        }
     }//GEN-LAST:event_jbRemoveUserActionPerformed
 
     private void jbResetPasswordActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jbResetPasswordActionPerformed
-        // TODO add your handling code here:
+        try {
+            int indexSelectedTable = jTableUsers.getSelectedRow();
+            if (indexSelectedTable < 0) {
+                new EmitAlert(this, "Selecione um usuário na tabela que deseja redefinir a senha").warning();
+                return;
+            }
+            User user = this.users.get(indexSelectedTable);
+            if (user == null) {
+                new EmitAlert(this, "Ocorreu um problema ao buscar usuário").warning();
+                return;
+            }
+            new ResetPassword(user).setVisible(true);
+        } catch (Exception ex) {
+            new EmitAlert(this, "Falha ao carregar a tela de redefinição de senha").error();
+        }
     }//GEN-LAST:event_jbResetPasswordActionPerformed
+
+    private void jTableUsersMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jTableUsersMouseClicked
+        jbEditUser.setEnabled(true);
+        jbRemoveUser.setEnabled(true);
+        jbResetPassword.setEnabled(true);
+    }//GEN-LAST:event_jTableUsersMouseClicked
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables

@@ -2,7 +2,7 @@ package com.bakehouse.gui_private.template;
 
 import com.bakehouse.domain.User;
 import com.bakehouse.gui_public.login.LoginGUI;
-import com.bakehouse.gui_public.users.UsersMain;
+import com.bakehouse.gui_private.users.UsersMain;
 import com.bakehouse.helpers.ApplicationUser;
 import com.bakehouse.helpers.EmitAlert;
 import java.awt.BorderLayout;

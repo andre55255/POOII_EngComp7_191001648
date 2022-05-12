@@ -64,4 +64,15 @@ public class EmitAlert {
                 JOptionPane.PLAIN_MESSAGE,
                 this.getIcon("/assets/ico-alert-warning.png", 40, 40));
     }
+    
+    public int confirm() {
+        int res = JOptionPane.showConfirmDialog(component, 
+                                      msg,
+                                      "Confirme",
+                                      JOptionPane.YES_NO_OPTION,
+                                      JOptionPane.PLAIN_MESSAGE,
+                                      this.getIcon("/assets/ico-confirm.png", 40, 40));
+        
+        return res;
+    }
 }
