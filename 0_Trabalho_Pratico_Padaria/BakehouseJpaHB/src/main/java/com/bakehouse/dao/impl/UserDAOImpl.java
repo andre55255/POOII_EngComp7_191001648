@@ -160,4 +160,23 @@ public class UserDAOImpl implements IUserDAO {
             em.close();
         }
     }
+
+    @Override
+    public int countUsersByRole(Role role) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query = em.createQuery("from User us where us.role = :role");
+            query.setParameter("role", role);
+            List<User> users = query.getResultList();
+            if (users != null)
+                return users.size();
+            return 0;
+        } catch (Exception ex) {
+            return -1;
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
 }

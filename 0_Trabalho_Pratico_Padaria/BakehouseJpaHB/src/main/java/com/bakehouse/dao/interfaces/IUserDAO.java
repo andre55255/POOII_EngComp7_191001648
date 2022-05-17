@@ -21,5 +21,7 @@ public interface IUserDAO {
     
     public List<User> findByRole(String roleStr);
     
+    public int countUsersByRole(Role role);
+    
     public User findByLogin(String login);
 }

@@ -38,7 +38,7 @@ public class EditUser extends javax.swing.JFrame {
             jtfLogin.setText(user.getLogin());
             jtfName.setText(user.getName());
 
-            int indexRoleCbx = -1;
+            int indexRoleCbx = 0;
             for (Role role : this.roles)
             {
                 indexRoleCbx++;
@@ -47,7 +47,7 @@ public class EditUser extends javax.swing.JFrame {
                     break;
                 }
             }
-            jcbRolesUsers.setSelectedIndex(indexRoleCbx + 1);
+            jcbRolesUsers.setSelectedIndex(indexRoleCbx);
         } catch (Exception ex)
         {
             new EmitAlert(this, "Falha ao carregar informações de usuário selecionado").error();

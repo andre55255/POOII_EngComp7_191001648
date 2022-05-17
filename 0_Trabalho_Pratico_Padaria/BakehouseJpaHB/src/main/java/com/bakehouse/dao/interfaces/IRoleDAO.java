@@ -10,7 +10,7 @@ public interface IRoleDAO {
     
     public Result update(Role role);
     
-    public Result delete(int id);
+    public Result delete(Role role);
     
     public Role findById(int id);
     

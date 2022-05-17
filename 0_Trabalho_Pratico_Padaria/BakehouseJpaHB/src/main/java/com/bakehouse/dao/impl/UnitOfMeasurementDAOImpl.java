@@ -111,12 +111,10 @@ public class UnitOfMeasurementDAOImpl implements IUnitOfMeasurementDAO {
         EntityManager em = emf.createEntityManager();
         
         try {
-            UnitOfMeasurement save = em.find(UnitOfMeasurement.class, id);
-            if (save == null)
-                return new Result("Unidade de medida não encontrada para deletar", false);
-            
             em.getTransaction().begin();
-            em.remove(save);
+            Query query = em.createQuery("delete from UnitOfMeasurement u where u.id = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
             em.getTransaction().commit();
             
             return new Result("Unidade de medida deletada com sucesso", true);

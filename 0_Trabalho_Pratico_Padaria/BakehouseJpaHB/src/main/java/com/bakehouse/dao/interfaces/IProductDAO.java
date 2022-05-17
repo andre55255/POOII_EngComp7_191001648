@@ -12,7 +12,7 @@ public interface IProductDAO {
     
     public Result update(Product product);
     
-    public List<Product> findAll();
+    public List<Product> findAll(boolean ascendent);
     
     public Product findById(int id);
     
@@ -23,4 +23,10 @@ public interface IProductDAO {
     public List<Product> findByUnitOfMeasurement(UnitOfMeasurement unitOfMeasurement);
     
     public Result delete(int id);
+    
+    public List<Product> findAllByValueUnitary(boolean ascendent);
+    
+    public List<Product> findAllByCategory(boolean ascendent);
+    
+    public List<Product> findAllByUnitOfMeasurement(boolean ascendent);
 }

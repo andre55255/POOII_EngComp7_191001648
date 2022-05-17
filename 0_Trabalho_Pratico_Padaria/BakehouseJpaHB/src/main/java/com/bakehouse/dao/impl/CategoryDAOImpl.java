@@ -112,12 +112,10 @@ public class CategoryDAOImpl implements ICategoryDAO {
         EntityManager em = emf.createEntityManager();
         
         try {
-            Category save = em.find(Category.class, id);
-            if (save == null)
-                return new Result("Categoria não encontrada para deletar", false);
-            
             em.getTransaction().begin();
-            em.remove(save);
+            Query query = em.createQuery("delete from Category c where c.id = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
             em.getTransaction().commit();
             
             return new Result("Categoria deletada com sucesso", true);

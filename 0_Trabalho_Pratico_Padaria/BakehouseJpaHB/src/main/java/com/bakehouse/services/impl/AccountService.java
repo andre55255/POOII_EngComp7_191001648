@@ -165,8 +165,19 @@ public class AccountService implements IAccountService {
             if (id <= 0)
                 return new Result("ID inválido", false);
             
-            Result resultDelete = roleDao.delete(id);
-            return resultDelete;
+            Role role = roleDao.findById(id);
+            if (role == null)
+                return new Result("Perfil não encontrado", false);
+            
+            int countUsersByRole = userDao.countUsersByRole(role);
+            if (countUsersByRole == -1)
+                return new Result("Erro ao verificar usuários com este perfil", false);
+            
+            if (countUsersByRole > 0)
+                return new Result("Este perfil possui usuários relacionados, verifique", false);
+            
+            Result result = roleDao.delete(role);
+            return result;
         } catch (Exception ex) {
             return new Result("Falha inesperada ao deletar perfil", false);
         }

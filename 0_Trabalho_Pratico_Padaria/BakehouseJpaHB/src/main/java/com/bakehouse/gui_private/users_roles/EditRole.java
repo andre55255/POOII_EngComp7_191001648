@@ -170,7 +170,7 @@ public class EditRole extends javax.swing.JFrame {
             }
             RoleVO roleVO = new RoleVO();
             roleVO.setId(role.getId());
-            roleVO.setDescription(role.getDescription());
+            roleVO.setDescription(description);
             Component compThis = this;
             LoadingGUI loadGui = new LoadingGUI();
             loadGui.setVisible(true);
@@ -184,7 +184,7 @@ public class EditRole extends javax.swing.JFrame {
                         new EmitAlert(compThis, result.getMessage()).error();
                         return;
                     }
-                    new EmitAlert(compThis, "Perfil criado com sucesso").success();
+                    new EmitAlert(compThis, "Perfil editado com sucesso").success();
                     compThis.setVisible(false);
                 }
             };

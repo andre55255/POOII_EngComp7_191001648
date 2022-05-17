@@ -1,6 +1,7 @@
 package com.bakehouse.gui_private.template;
 
 import com.bakehouse.domain.User;
+import com.bakehouse.gui_private.products.ProductsMain;
 import com.bakehouse.gui_public.login.LoginGUI;
 import com.bakehouse.gui_private.users_roles.UsersRolesMain;
 import com.bakehouse.helpers.ApplicationUser;
@@ -427,6 +428,7 @@ public class Home extends javax.swing.JFrame {
 
     private void NavProductsMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NavProductsMouseClicked
         NavProducts.setBackground(new Color(255,102,51));
+        handlerPageDinamic(new ProductsMain());
     }//GEN-LAST:event_NavProductsMouseClicked
 
     private void NavProductsMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_NavProductsMouseEntered

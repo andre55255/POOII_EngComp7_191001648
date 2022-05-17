@@ -57,11 +57,16 @@ public class ProductDAOImpl implements IProductDAO {
     }
 
     @Override
-    public List<Product> findAll() {
+    public List<Product> findAll(boolean ascendent) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            Query query = em.createQuery("from Product p order by p.description asc");
+            Query query;
+            if (ascendent)
+                query = em.createQuery("from Product p order by p.description asc");
+            else
+                query = em.createQuery("from Product p order by p.description desc");
+                
             return query.getResultList();
         } catch (Exception ex) {
             return null;
@@ -140,18 +145,76 @@ public class ProductDAOImpl implements IProductDAO {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            Product save = findById(id);
-            if (save == null)
-                return new Result("Produto a ser deletado não encontrado", false);
-            
             em.getTransaction().begin();
-            em.remove(save);
+            Query query = em.createQuery("delete from Product p where p.id = :id");
+            query.setParameter("id", id);
+            query.executeUpdate();
             em.getTransaction().commit();
             
             return new Result("Produto deletado com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
             return new Result("Falha ao deletar produto, id: "+id, false);
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Product> findAllByValueUnitary(boolean ascendent) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query;
+            if (ascendent)
+                query = em.createQuery("from Product prod order by prod.valueUnitary asc");
+            else
+                query = em.createQuery("from Product prod order by prod.valueUnitary desc");
+                
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Product> findAllByCategory(boolean ascendent) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query;
+            if (ascendent)
+                query = em.createQuery("from Product prod order by prod.category asc");
+            else
+                query = em.createQuery("from Product prod order by prod.category desc");
+                
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
+        } finally {
+            emf.close();
+            em.close();
+        }
+    }
+
+    @Override
+    public List<Product> findAllByUnitOfMeasurement(boolean ascendent) {
+        EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
+        EntityManager em = emf.createEntityManager();
+        try {
+            Query query;
+            if (ascendent)
+                query = em.createQuery("from Product prod order by prod.unitOfMeasurement asc");
+            else
+                query = em.createQuery("from Product prod order by prod.unitOfMeasurement desc");
+                
+            return query.getResultList();
+        } catch (Exception ex) {
+            return null;
         } finally {
             emf.close();
             em.close();

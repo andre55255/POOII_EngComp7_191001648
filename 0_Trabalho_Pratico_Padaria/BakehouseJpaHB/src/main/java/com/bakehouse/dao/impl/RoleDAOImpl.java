@@ -2,7 +2,6 @@ package com.bakehouse.dao.impl;
 
 import com.bakehouse.dao.interfaces.IRoleDAO;
 import com.bakehouse.domain.Role;
-import com.bakehouse.domain.User;
 import com.bakehouse.helpers.ConstantsStatic;
 import com.bakehouse.helpers.Result;
 import java.util.List;
@@ -52,29 +51,16 @@ public class RoleDAOImpl implements IRoleDAO {
     }
 
     @Override
-    public Result delete(int id) {
+    public Result delete(Role role) {
         EntityManagerFactory emf = Persistence.createEntityManagerFactory(ConstantsStatic.PERSISTENCE_UNIT_NAME);
         EntityManager em = emf.createEntityManager();
         try {
-            Role role = findById(id);
-            if (role == null)
-                return new Result("Perfil não encontrado", false);
-
-            Query queryRelationals = em.createQuery("from User u where u.role = :role");
-            List<User> users = queryRelationals.getResultList();
-            if (users != null && users.size() > 0)
-                return new Result("Perfil possui vinculos, não é possível excluir", false);
-            
             em.getTransaction().begin();
-            Query query = em.createQuery("Delete from Role r where r.id = :id");
-            query.setParameter("id", id);
-            int res = query.executeUpdate();
+            Query query = em.createQuery("delete from Role r where r.id = :id");
+            query.setParameter("id", role.getId());
+            query.executeUpdate();
             em.getTransaction().commit();
-            
-            if (res > 0)
-                return new Result("Perfil deletado com sucesso", true);
-            else
-                return new Result("Falha ao deletar perfil no banco", false);
+            return new Result("Perfil deletado com sucesso", true);
         } catch (Exception ex) {
             em.getTransaction().rollback();
             return new Result("Falha ao deletar perfil no banco de dados", false);
